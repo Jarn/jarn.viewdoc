@@ -85,17 +85,17 @@ class Defaults(object):
         if not isfile(filename):
             self.write_default(filename)
 
-        self.parser = ConfigParser.ConfigParser()
-        self.parser.read(filename)
+        parser = ConfigParser.ConfigParser()
+        parser.read(filename)
 
         def get(section, key, default=None):
-            if self.parser.has_option(section, key):
-                return self.parser.get(section, key)
+            if parser.has_option(section, key):
+                return parser.get(section, key)
             return default
 
         self.available_styles = {}
-        if self.parser.has_section('styles'):
-            for key, value in self.parser.items('styles'):
+        if parser.has_section('styles'):
+            for key, value in parser.items('styles'):
                 self.available_styles[key] = value.strip()+'\n'
 
         self.default_style = get('viewdoc', 'style', 'pypi')
