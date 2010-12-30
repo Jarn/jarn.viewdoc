@@ -83,7 +83,7 @@ class Defaults(object):
         """
         filename = expanduser('~/.viewdoc')
         if not isfile(filename):
-            self.write_defaults(filename)
+            self.write_default(filename)
 
         self.parser = ConfigParser.ConfigParser()
         self.parser.read(filename)
@@ -103,7 +103,7 @@ class Defaults(object):
 
         self.styles = self.available_styles.get(self.default_style, '')
 
-    def write_defaults(self, filename):
+    def write_default(self, filename):
         """Write the default config file.
         """
         try:
