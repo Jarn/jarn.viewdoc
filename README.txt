@@ -40,3 +40,8 @@ Options
     The Python package whose long description to view.
     Defaults to the current working directory.
 
+Configuration
+=============
+
+The script reads style information from its configuration file
+``~/.viewdoc``.
