@@ -112,8 +112,8 @@ class Defaults(object):
                 f.write(CONFIG)
             finally:
                 f.close()
-        except (IOError, OSError):
-            pass
+        except (IOError, OSError), e:
+            print >>sys.stderr, '%s: %s' % (e.strerror or e, filename)
 
 
 class DocumentationViewer(object):
