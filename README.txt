@@ -7,6 +7,8 @@ View Python package documentation
 
 **viewdoc** is a Python package documentation viewer. It converts
 reST-formatted files to HTML and displays them in a browser window.
+It is typically used to check a package's long description before
+uploading it to PyPI.
 
 Installation
 ============
@@ -33,6 +35,6 @@ Options
     The reST file to view.
 
 ``egg-dir``
-    The Python package whose reST-formatted long description to view.
+    The Python package whose long description to view.
     Defaults to the current working directory.
 

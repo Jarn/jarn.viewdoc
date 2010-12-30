@@ -28,7 +28,7 @@ Options:
   -v, --version       Print the version string and exit.
 
   rst-file            reST file to view.
-  egg-dir             Package whose reST-formatted long description to view.
+  egg-dir             Package whose long description to view.
                       Defaults to the current working directory.
 """
 
@@ -61,6 +61,7 @@ class DocumentationViewer(object):
     def __init__(self, args):
         """Set defaults.
         """
+        self.python = sys.executable
         self.styles = styles
         self.args = args
 
@@ -80,14 +81,29 @@ class DocumentationViewer(object):
 
         return args
 
-    def rst2html(self, infile, outfile):
-        """Call the docutils publisher.
+    def run_rst2html(self, infile, outfile):
+        """Run the docutils publisher.
         """
         try:
             publish_file(writer_name='html', source_path=infile, destination_path=outfile)
         except SystemExit, e:
             return e.code
         return 0
+
+    def apply_styles(self, outfile):
+        """Insert style information into the HTML file.
+        """
+        f = open(outfile, 'rt')
+        lines = f.readlines() # XXX: Really?
+        f.close()
+        f = open(outfile, 'wt')
+        done = False
+        for line in lines:
+            if not done and line.strip() == '</head>':
+                f.write(self.styles)
+                done = True
+            f.write(line)
+        f.close()
 
     def render_file(self, filename):
         """Convert a reST file to HTML.
@@ -99,7 +115,7 @@ class DocumentationViewer(object):
         try:
             infile = abspath(basename)
             outfile = abspath('.%s.html' % basename)
-            rc = self.rst2html(infile, outfile)
+            rc = self.run_rst2html(infile, outfile)
             return rc, outfile
         finally:
             os.chdir(saved)
@@ -111,33 +127,20 @@ class DocumentationViewer(object):
         os.chdir(dirname)
         try:
             if not isfile('setup.py'):
-                err_exit('Not eggified (no setup.py found): %s' % os.getcwd())
+                err_exit('No setup.py found in %s' % os.getcwd())
 
             tempdir = abspath(tempfile.mkdtemp(prefix='viewdoc-'))
             try:
                 infile = join(tempdir, 'tempfile.rst')
                 outfile = abspath('.long-description.html')
-                rc = os.system('"%s" setup.py --long-description > "%s"' % (sys.executable, infile))
+                rc = os.system('"%s" setup.py --long-description > "%s"' % (self.python, infile))
                 if rc == 0:
-                    rc = self.rst2html(infile, outfile)
+                    rc = self.run_rst2html(infile, outfile)
                 return rc, outfile
             finally:
                 shutil.rmtree(tempdir)
         finally:
             os.chdir(saved)
-
-    def apply_styles(self, filename):
-        """Insert style information into the HTML file.
-        """
-        f = open(filename, 'rt')
-        lines = f.readlines() # XXX: Really?
-        f.close()
-        f = open(filename, 'wt')
-        for line in lines:
-            if line.strip() == '</head>':
-                f.write(self.styles)
-            f.write(line)
-        f.close()
 
     def run(self):
         """Render and display package documentation.
