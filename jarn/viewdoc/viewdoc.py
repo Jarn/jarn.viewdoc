@@ -96,7 +96,7 @@ class Defaults(object):
         self.available_styles = {}
         if self.parser.has_section('styles'):
             for key, value in self.parser.items('styles'):
-                self.available_styles.setdefault(key, value.strip()+'\n')
+                self.available_styles[key] = value.strip()+'\n'
 
         self.default_style = get('viewdoc', 'style', 'pypi')
         self.available_styles.setdefault('pypi', STYLES)
