@@ -14,7 +14,7 @@ import webbrowser
 from os.path import abspath, expanduser, dirname, basename
 from os.path import split, join, isdir, isfile
 
-from docutils.core import publish_file
+from docutils.core import publish_string
 
 version = "jarn.viewdoc %s" % __version__
 usage = "Try 'viewdoc --help' for more information."
@@ -81,29 +81,53 @@ class DocumentationViewer(object):
 
         return args
 
-    def run_rst2html(self, infile, outfile):
-        """Run the docutils publisher.
+    def read_file(self, infile):
+        """Read a reST file into a string.
         """
         try:
-            publish_file(writer_name='html', source_path=infile, destination_path=outfile)
-        except SystemExit, e:
-            return e.code
-        return 0
+            f = open(infile, 'rt')
+            try:
+                return f.read()
+            finally:
+                f.close()
+        except (IOError, OSError), e:
+            err_exit('%s: %s' % (e.strerror or e, infile))
 
-    def apply_styles(self, outfile):
-        """Insert style information into the HTML file.
+    def write_file(self, html, outfile):
+        """Write an HTML string to a file.
         """
-        f = open(outfile, 'rt')
-        lines = f.readlines() # XXX: Really?
-        f.close()
-        f = open(outfile, 'wt')
-        done = False
-        for line in lines:
-            if not done and line.strip() == '</head>':
-                f.write(self.styles)
-                done = True
-            f.write(line)
-        f.close()
+        try:
+            f = open(outfile, 'wt')
+            try:
+                f.write(html)
+            finally:
+                f.close()
+        except (IOError, OSError), e:
+            err_exit('%s: %s' % (e.strerror or e, outfile))
+
+    def rest_to_html(self, rest):
+        """Run docutils and return an HTML string.
+        """
+        try:
+            return publish_string(rest, writer_name='html')
+        except SystemExit, e:
+            err_exit('HTML conversion failed with error: %s' % e.code)
+
+    def apply_styles(self, html):
+        """Insert style information into the HTML string.
+        """
+        index = html.index('</head>')
+        if index < 0:
+            return html
+        return ''.join((html[:index], self.styles, html[index:]))
+
+    def render(self, infile, outfile):
+        """Render a reST file as HTML.
+        """
+        rest = self.read_file(infile)
+        html = self.rest_to_html(rest)
+        html = self.apply_styles(html)
+        self.write_file(html, outfile)
 
     def render_file(self, filename):
         """Convert a reST file to HTML.
@@ -115,8 +139,8 @@ class DocumentationViewer(object):
         try:
             infile = abspath(basename)
             outfile = abspath('.%s.html' % basename)
-            rc = self.run_rst2html(infile, outfile)
-            return rc, outfile
+            self.render(infile, outfile)
+            return outfile
         finally:
             os.chdir(saved)
 
@@ -124,47 +148,44 @@ class DocumentationViewer(object):
         """Convert a package's long description to HTML.
         """
         saved = os.getcwd()
-        os.chdir(dirname)
+        if dirname:
+            os.chdir(dirname)
         try:
             if not isfile('setup.py'):
                 err_exit('No setup.py found in %s' % os.getcwd())
 
             tempdir = abspath(tempfile.mkdtemp(prefix='viewdoc-'))
             try:
-                infile = join(tempdir, 'tempfile.rst')
+                infile = join(tempdir, 'long-description.rst')
                 outfile = abspath('.long-description.html')
                 rc = os.system('"%s" setup.py --long-description > "%s"' % (self.python, infile))
-                if rc == 0:
-                    rc = self.run_rst2html(infile, outfile)
-                return rc, outfile
+                if rc != 0:
+                    err_exit('HTML conversion failed with error: %s' % rc)
+                self.render(infile, outfile)
+                return outfile
             finally:
                 shutil.rmtree(tempdir)
         finally:
             os.chdir(saved)
 
     def run(self):
-        """Render and display package documentation.
+        """Render and display Python package documentation.
         """
         args = self.parse_options(self.args)
-
         if args:
             arg = args.pop(0)
         else:
             arg = os.curdir
-
         if args:
             err_exit('viewdoc: too many arguments\n%s' % usage)
 
         if isfile(arg):
-            rc, outfile = self.render_file(arg)
+            outfile = self.render_file(arg)
         elif isdir(arg):
-            rc, outfile = self.render_long_description(arg)
+            outfile = self.render_long_description(arg)
         else:
             err_exit('No such file or directory: %s' % arg)
-        if rc != 0:
-            err_exit('HTML conversion failed with return code: %s' % rc, rc)
 
-        self.apply_styles(outfile)
         webbrowser.open('file://%s' % outfile)
 
 
