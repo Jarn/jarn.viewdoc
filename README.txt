@@ -13,9 +13,9 @@ uploading it to PyPI.
 Installation
 ============
 
-viewdoc requires Python 2.6. Use ``easy_install jarn.viewdoc`` to install
-the ``viewdoc`` script. Then put it on your system PATH by e.g. symlinking
-it to ``/usr/local/bin``.
+viewdoc requires Python 2.4 or higher. Use ``easy_install jarn.viewdoc`` to
+install the ``viewdoc`` script. Then put it on your system PATH by e.g.
+symlinking it to ``/usr/local/bin``.
 
 Usage
 =====

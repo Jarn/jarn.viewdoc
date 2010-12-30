@@ -33,7 +33,7 @@ Options:
 """
 
 styles = """\
-<link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css"/>
+<link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
 <style type="text/css">
 body { margin-left: 6em; margin-right: 6em; font-size: 95%; }
 a { text-decoration: none; color: #0000aa; border-bottom: 1px dashed #cccccc; }
@@ -79,6 +79,8 @@ class DocumentationViewer(object):
             elif name in ('-h', '--help'):
                 msg_exit(help)
 
+        if len(args) > 1:
+            err_exit('viewdoc: too many arguments\n%s' % usage)
         return args
 
     def read_file(self, infile):
@@ -171,13 +173,14 @@ class DocumentationViewer(object):
     def run(self):
         """Render and display Python package documentation.
         """
+        if sys.version[:3] < '2.4':
+            err_exit('Python >= 2.4 required')
+
         args = self.parse_options(self.args)
         if args:
-            arg = args.pop(0)
+            arg = args[0]
         else:
             arg = os.curdir
-        if args:
-            err_exit('viewdoc: too many arguments\n%s' % usage)
 
         if isfile(arg):
             outfile = self.render_file(arg)
