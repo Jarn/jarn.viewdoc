@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '1.0a2'
+version = '1.0'
 
 setup(name='jarn.viewdoc',
       version=version,
@@ -8,11 +8,10 @@ setup(name='jarn.viewdoc',
       long_description=open('README.txt').read() + '\n' +
                        open('CHANGES.txt').read(),
       classifiers=[
-          'Development Status :: 3 - Alpha',
+          'Development Status :: 5 - Production/Stable',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: BSD License',
-          'Operating System :: MacOS :: MacOS X',
-          'Operating System :: POSIX',
+          'Operating System :: OS Independent',
           'Programming Language :: Python :: 2',
       ],
       keywords='view rest docs',
@@ -24,7 +23,6 @@ setup(name='jarn.viewdoc',
       namespace_packages=['jarn'],
       include_package_data=True,
       zip_safe=False,
-      test_suite='jarn.viewdoc.tests',
       install_requires=[
           'setuptools',
           'docutils',
