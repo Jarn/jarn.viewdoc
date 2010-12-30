@@ -116,32 +116,12 @@ class Defaults(object):
             print >>sys.stderr, '%s: %s' % (e.strerror or e, filename)
 
 
-class DocumentationViewer(object):
+class Docutils(object):
 
-    def __init__(self, args):
+    def __init__(self, defaults):
         """Set defaults.
         """
-        self.defaults = Defaults()
-        self.styles = self.defaults.styles
-        self.args = args
-
-    def parse_options(self, args):
-        """Parse command line options.
-        """
-        try:
-            options, args = getopt.gnu_getopt(args, 'hv', ('help', 'version'))
-        except getopt.GetoptError, e:
-            err_exit('viewdoc: %s\n%s' % (e.msg, USAGE))
-
-        for name, value in options:
-            if name in ('-v', '--version'):
-                msg_exit(VERSION)
-            elif name in ('-h', '--help'):
-                msg_exit(HELP)
-
-        if len(args) > 1:
-            err_exit('viewdoc: too many arguments\n%s' % USAGE)
-        return args
+        self.styles = defaults.styles
 
     def read_file(self, infile):
         """Read a reST file into a string.
@@ -167,7 +147,7 @@ class DocumentationViewer(object):
         except (IOError, OSError), e:
             err_exit('%s: %s' % (e.strerror or e, outfile))
 
-    def rest_to_html(self, rest):
+    def publish_string(self, rest):
         """Run docutils and return an HTML string.
         """
         try:
@@ -183,13 +163,41 @@ class DocumentationViewer(object):
             return html
         return ''.join((html[:index], self.styles, html[index:]))
 
-    def render(self, infile, outfile):
+    def rst2html(self, infile, outfile):
         """Render a reST file as HTML.
         """
         rest = self.read_file(infile)
-        html = self.rest_to_html(rest)
+        html = self.publish_string(rest)
         html = self.apply_styles(html)
         self.write_file(html, outfile)
+
+
+class DocumentationViewer(object):
+
+    def __init__(self, args):
+        """Set defaults.
+        """
+        self.defaults = Defaults()
+        self.docutils = Docutils(self.defaults)
+        self.args = args
+
+    def parse_options(self, args):
+        """Parse command line options.
+        """
+        try:
+            options, args = getopt.gnu_getopt(args, 'hv', ('help', 'version'))
+        except getopt.GetoptError, e:
+            err_exit('viewdoc: %s\n%s' % (e.msg, USAGE))
+
+        for name, value in options:
+            if name in ('-v', '--version'):
+                msg_exit(VERSION)
+            elif name in ('-h', '--help'):
+                msg_exit(HELP)
+
+        if len(args) > 1:
+            err_exit('viewdoc: too many arguments\n%s' % USAGE)
+        return args
 
     def render_file(self, filename):
         """Convert a reST file to HTML.
@@ -201,7 +209,7 @@ class DocumentationViewer(object):
         try:
             infile = abspath(basename)
             outfile = abspath('.%s.html' % basename)
-            self.render(infile, outfile)
+            self.docutils.rst2html(infile, outfile)
             return outfile
         finally:
             os.chdir(saved)
@@ -223,7 +231,7 @@ class DocumentationViewer(object):
                 rc = os.system('"%s" setup.py --long-description > "%s"' % (sys.executable, infile))
                 if rc != 0:
                     err_exit('HTML conversion failed with error: %s' % rc)
-                self.render(infile, outfile)
+                self.docutils.rst2html(infile, outfile)
                 return outfile
             finally:
                 shutil.rmtree(tempdir)
