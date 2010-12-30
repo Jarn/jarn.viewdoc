@@ -233,7 +233,7 @@ class DocumentationViewer(object):
     def run(self):
         """Render and display Python package documentation.
         """
-        if sys.version[:3] < '2.4':
+        if sys.version_info[:2] < (2, 4):
             err_exit('Python >= 2.4 required')
 
         args = self.parse_options(self.args)
