@@ -178,7 +178,7 @@ class DocumentationViewer(object):
     def apply_styles(self, html):
         """Insert style information into the HTML string.
         """
-        index = html.index('</head>')
+        index = html.find('</head>')
         if index < 0:
             return html
         return ''.join((html[:index], self.styles, html[index:]))
