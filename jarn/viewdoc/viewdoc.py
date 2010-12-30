@@ -102,7 +102,6 @@ class Defaults(object):
         self.available_styles.setdefault('pypi', STYLES)
 
         self.styles = self.available_styles.get(self.default_style, '')
-        self.python = sys.executable
 
     def write_defaults(self, filename):
         """Write the default config file.
@@ -123,7 +122,6 @@ class DocumentationViewer(object):
         """Set defaults.
         """
         self.defaults = Defaults()
-        self.python = self.defaults.python
         self.styles = self.defaults.styles
         self.args = args
 
@@ -222,7 +220,7 @@ class DocumentationViewer(object):
             try:
                 infile = join(tempdir, 'long-description.rst')
                 outfile = abspath('.long-description.html')
-                rc = os.system('"%s" setup.py --long-description > "%s"' % (self.python, infile))
+                rc = os.system('"%s" setup.py --long-description > "%s"' % (sys.executable, infile))
                 if rc != 0:
                     err_exit('HTML conversion failed with error: %s' % rc)
                 self.render(infile, outfile)
