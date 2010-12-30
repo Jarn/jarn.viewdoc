@@ -10,15 +10,17 @@ import getopt
 import tempfile
 import shutil
 import webbrowser
+import ConfigParser
 
 from os.path import abspath, expanduser, dirname, basename
 from os.path import split, join, isdir, isfile
 
 from docutils.core import publish_string
 
-version = "jarn.viewdoc %s" % __version__
-usage = "Try 'viewdoc --help' for more information."
-help = """\
+VERSION = "jarn.viewdoc %s" % __version__
+USAGE = "Try 'viewdoc --help' for more information."
+
+HELP = """\
 Usage: viewdoc [options] [rst-file|egg-dir]
 
 Documentation viewer
@@ -32,13 +34,31 @@ Options:
                       Defaults to the current working directory.
 """
 
-styles = """\
+STYLES = """\
 <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
 <style type="text/css">
-body { margin-left: 6em; margin-right: 6em; font-size: 95%; }
+body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
 a { text-decoration: none; color: #0000aa; border-bottom: 1px dashed #cccccc; }
 a:visited { text-decoration: none; color: #551a8b; border-bottom: 1px dashed #cccccc; }
 </style>
+"""
+
+CONFIG = """\
+[viewdoc]
+style = pypi
+
+[styles]
+plain =
+    <style type="text/css">
+    body { margin-left: 10em; margin-right: 10em; }
+    </style>
+pypi =
+    <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
+    <style type="text/css">
+    body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
+    a:link { text-decoration: none; color: #0000aa; border-bottom: 1px dashed #cccccc; }
+    a:visited { text-decoration: none; color: #551a8b; border-bottom: 1px dashed #cccccc; }
+    </style>
 """
 
 
@@ -56,13 +76,55 @@ def err_exit(msg, rc=1):
     sys.exit(rc)
 
 
+class Defaults(object):
+
+    def __init__(self):
+        """Read the config file.
+        """
+        filename = expanduser('~/.viewdoc')
+        if not isfile(filename):
+            self.write_defaults(filename)
+
+        self.parser = ConfigParser.ConfigParser()
+        self.parser.read(filename)
+
+        def get(section, key, default=None):
+            if self.parser.has_option(section, key):
+                return self.parser.get(section, key)
+            return default
+
+        self.available_styles = {}
+        if self.parser.has_section('styles'):
+            for key, value in self.parser.items('styles'):
+                self.available_styles.setdefault(key, value.strip()+'\n')
+
+        self.default_style = get('viewdoc', 'style', 'pypi')
+        self.available_styles.setdefault('pypi', STYLES)
+
+        self.styles = self.available_styles.get(self.default_style, '')
+        self.python = sys.executable
+
+    def write_defaults(self, filename):
+        """Write the default config file.
+        """
+        try:
+            f = open(filename, 'wt')
+            try:
+                f.write(CONFIG)
+            finally:
+                f.close()
+        except (IOError, OSError):
+            pass
+
+
 class DocumentationViewer(object):
 
     def __init__(self, args):
         """Set defaults.
         """
-        self.python = sys.executable
-        self.styles = styles
+        self.defaults = Defaults()
+        self.python = self.defaults.python
+        self.styles = self.defaults.styles
         self.args = args
 
     def parse_options(self, args):
@@ -71,16 +133,16 @@ class DocumentationViewer(object):
         try:
             options, args = getopt.gnu_getopt(args, 'hv', ('help', 'version'))
         except getopt.GetoptError, e:
-            err_exit('viewdoc: %s\n%s' % (e.msg, usage))
+            err_exit('viewdoc: %s\n%s' % (e.msg, USAGE))
 
         for name, value in options:
             if name in ('-v', '--version'):
-                msg_exit(version)
+                msg_exit(VERSION)
             elif name in ('-h', '--help'):
-                msg_exit(help)
+                msg_exit(HELP)
 
         if len(args) > 1:
-            err_exit('viewdoc: too many arguments\n%s' % usage)
+            err_exit('viewdoc: too many arguments\n%s' % USAGE)
         return args
 
     def read_file(self, infile):
@@ -154,7 +216,7 @@ class DocumentationViewer(object):
             os.chdir(dirname)
         try:
             if not isfile('setup.py'):
-                err_exit('No setup.py found in %s' % os.getcwd())
+                err_exit('Not eggified (no setup.py found): %s' % os.getcwd())
 
             tempdir = abspath(tempfile.mkdtemp(prefix='viewdoc-'))
             try:
