@@ -4,7 +4,7 @@ version = '1.0a1'
 
 setup(name='jarn.viewdoc',
       version=version,
-      description='View reST-formatted package documentation',
+      description='View Python package documentation',
       long_description=open('README.txt').read() + '\n' +
                        open('CHANGES.txt').read(),
       classifiers=[
