@@ -27,7 +27,9 @@ Documentation viewer
 
 Options:
   -s style, --style=style
-                      Select the style added to the HTML output.
+                      Select the custom styles added to the HTML output.
+                      Used to override the configuration file setting of
+                      the same name.
 
   -h, --help          Print this help message and exit.
   -v, --version       Print the version string and exit.
@@ -37,7 +39,7 @@ Options:
                       Defaults to the current working directory.
 """
 
-STYLES = """\
+PYPI = """\
 <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
 <style type="text/css">
 body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
@@ -104,7 +106,7 @@ class Defaults(object):
                 self.available_styles[key] = value.strip()+'\n'
 
         self.default_style = get('viewdoc', 'style', 'pypi')
-        self.available_styles.setdefault('pypi', STYLES)
+        self.available_styles.setdefault('pypi', PYPI)
 
         self.styles = self.available_styles.get(self.default_style, '')
 

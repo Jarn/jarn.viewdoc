@@ -7,7 +7,7 @@ Changelog
 - Add ``-s`` option to select styles on the command line.
   [stefan]
 
-- Only underline reference links in ``pypi`` styles.
+- In ``pypi`` styles, only underline reference links.
   [stefan]
 
 1.0 - 2010-12-30

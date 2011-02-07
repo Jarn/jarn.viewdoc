@@ -17,6 +17,9 @@ viewdoc requires Python 2.4 or higher. Use ``easy_install jarn.viewdoc`` to
 install the ``viewdoc`` script. Then put it on your system PATH by e.g.
 symlinking it to ``/usr/local/bin``.
 
+**Upgrade Note:** If you have viewdoc 1.0 on your system, you must delete
+your existing ``~/.viewdoc`` file in order to get the updated styles.
+
 Usage
 =====
 
@@ -26,7 +29,8 @@ Options
 =======
 
 ``-s style, --style=style``
-    Select the style added to the HTML output.
+    Select the custom styles added to the HTML output. Used to override the
+    configuration file setting of the same name.
 
 ``-h, --help``
     Print the help message and exit.
@@ -45,5 +49,5 @@ Configuration
 =============
 
 The program reads style information from its configuration file
-``~/.viewdoc``. Edit this file to change the defaults and to add new styles.
-
+``~/.viewdoc``. Edit this file to change the defaults and to add your own
+styles.
