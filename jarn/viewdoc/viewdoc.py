@@ -41,8 +41,9 @@ STYLES = """\
 <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
 <style type="text/css">
 body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
-a { text-decoration: none; color: #0000aa; border-bottom: 1px dashed #cccccc; }
-a:visited { text-decoration: none; color: #551a8b; border-bottom: 1px dashed #cccccc; }
+a:link { text-decoration: none; color: #0000aa; }
+a:visited { text-decoration: none; color: #551a8b; }
+a.reference { border-bottom: 1px dashed #cccccc; }
 </style>
 """
 
@@ -59,8 +60,9 @@ pypi =
     <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
     <style type="text/css">
     body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
-    a:link { text-decoration: none; color: #0000aa; border-bottom: 1px dashed #cccccc; }
-    a:visited { text-decoration: none; color: #551a8b; border-bottom: 1px dashed #cccccc; }
+    a:link { text-decoration: none; color: #0000aa; }
+    a:visited { text-decoration: none; color: #551a8b; }
+    a.reference { border-bottom: 1px dashed #cccccc; }
     </style>
 """
 
