@@ -26,6 +26,9 @@ Usage: viewdoc [options] [rst-file|egg-dir]
 Documentation viewer
 
 Options:
+  -s style, --style=style
+                      Select the style added to the HTML output.
+
   -h, --help          Print this help message and exit.
   -v, --version       Print the version string and exit.
 
@@ -118,11 +121,6 @@ class Defaults(object):
 
 class Docutils(object):
 
-    def __init__(self, defaults):
-        """Set defaults.
-        """
-        self.styles = defaults.styles
-
     def read_file(self, infile):
         """Read a reST file into a string.
         """
@@ -148,27 +146,27 @@ class Docutils(object):
             err_exit('%s: %s' % (e.strerror or e, outfile))
 
     def publish_string(self, rest):
-        """Run docutils and return an HTML string.
+        """Convert a reST string to an HTML string.
         """
         try:
             return publish_string(rest, writer_name='html')
         except SystemExit, e:
             err_exit('HTML conversion failed with error: %s' % e.code)
 
-    def apply_styles(self, html):
+    def apply_styles(self, html, styles):
         """Insert style information into the HTML string.
         """
         index = html.find('</head>')
         if index < 0:
             return html
-        return ''.join((html[:index], self.styles, html[index:]))
+        return ''.join((html[:index], styles, html[index:]))
 
-    def rst2html(self, infile, outfile):
+    def run(self, infile, outfile, styles=''):
         """Render a reST file as HTML.
         """
         rest = self.read_file(infile)
         html = self.publish_string(rest)
-        html = self.apply_styles(html)
+        html = self.apply_styles(html, styles)
         self.write_file(html, outfile)
 
 
@@ -178,19 +176,22 @@ class DocumentationViewer(object):
         """Set defaults.
         """
         self.defaults = Defaults()
-        self.docutils = Docutils(self.defaults)
+        self.docutils = Docutils()
+        self.styles = self.defaults.styles
         self.args = args
 
     def parse_options(self, args):
         """Parse command line options.
         """
         try:
-            options, args = getopt.gnu_getopt(args, 'hv', ('help', 'version'))
+            options, args = getopt.gnu_getopt(args, 'hs:v', ('help', 'style=', 'version'))
         except getopt.GetoptError, e:
             err_exit('viewdoc: %s\n%s' % (e.msg, USAGE))
 
         for name, value in options:
-            if name in ('-v', '--version'):
+            if name in ('-s', '--style'):
+                self.styles = self.defaults.available_styles.get(value, '')
+            elif name in ('-v', '--version'):
                 msg_exit(VERSION)
             elif name in ('-h', '--help'):
                 msg_exit(HELP)
@@ -209,7 +210,7 @@ class DocumentationViewer(object):
         try:
             infile = abspath(basename)
             outfile = abspath('.%s.html' % basename)
-            self.docutils.rst2html(infile, outfile)
+            self.docutils.run(infile, outfile, self.styles)
             return outfile
         finally:
             os.chdir(saved)
@@ -231,7 +232,7 @@ class DocumentationViewer(object):
                 rc = os.system('"%s" setup.py --long-description > "%s"' % (sys.executable, infile))
                 if rc != 0:
                     err_exit('HTML conversion failed with error: %s' % rc)
-                self.docutils.rst2html(infile, outfile)
+                self.docutils.run(infile, outfile, self.styles)
                 return outfile
             finally:
                 shutil.rmtree(tempdir)

@@ -25,6 +25,9 @@ Usage
 Options
 =======
 
+``-s style, --style=style``
+    Select the style added to the HTML output.
+
 ``-h, --help``
     Print the help message and exit.
 
@@ -42,5 +45,5 @@ Configuration
 =============
 
 The program reads style information from its configuration file
-``~/.viewdoc``.
+``~/.viewdoc``. Edit this file to change the defaults and to add new styles.
 
