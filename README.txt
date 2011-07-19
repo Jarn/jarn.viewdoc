@@ -28,9 +28,12 @@ Usage
 Options
 =======
 
-``-s style, --style=style``
-    Select the custom styles added to the HTML output. Used to override the
+``-s style, --style=style, or --style``
+    Select the custom style added to the HTML output. Used to override the
     configuration file setting of the same name.
+
+``-l, --list-styles``
+    List available styles and exit.
 
 ``-h, --help``
     Print the help message and exit.

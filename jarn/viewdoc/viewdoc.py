@@ -24,11 +24,12 @@ Usage: viewdoc [options] [rst-file|egg-dir]
 Documentation viewer
 
 Options:
-  -s style, --style=style
-                      Select the custom styles added to the HTML output.
+  -s style, --style=style, or --style
+                      Select the custom style added to the HTML output.
                       Used to override the configuration file setting of
                       the same name.
 
+  -l, --list-styles   List available styles and exit.
   -h, --help          Print this help message and exit.
   -v, --version       Print the version string and exit.
 
@@ -98,15 +99,14 @@ class Defaults(object):
                 return parser.get(section, key)
             return default
 
-        self.available_styles = {}
+        self.known_styles = {}
         if parser.has_section('styles'):
             for key, value in parser.items('styles'):
-                self.available_styles[key] = value.strip()+'\n'
+                self.known_styles[key] = value.strip()+'\n'
 
         self.default_style = get('viewdoc', 'style', 'pypi')
-        self.available_styles.setdefault('pypi', PYPI)
-
-        self.styles = self.available_styles.get(self.default_style, '')
+        self.known_styles.setdefault('pypi', PYPI)
+        self.styles = self.known_styles.get(self.default_style, '')
 
     def write_default_config(self, filename):
         """Write the default config file.
@@ -221,18 +221,26 @@ class DocumentationViewer(object):
     def parse_options(self, args):
         """Parse command line options.
         """
+        style_names = tuple(self.defaults.known_styles)
+        style_opts = tuple('--'+x for x in style_names)
+
         try:
-            options, args = getopt.gnu_getopt(args, 'hs:v', ('help', 'style=', 'version'))
+            options, args = getopt.gnu_getopt(args, 'hls:v',
+                ('help', 'style=', 'version', 'list-styles') + style_names)
         except getopt.GetoptError, e:
             err_exit('viewdoc: %s\n%s' % (e.msg, USAGE))
 
         for name, value in options:
             if name in ('-s', '--style'):
-                self.styles = self.defaults.available_styles.get(value, '')
+                self.styles = self.defaults.known_styles.get(value, '')
             elif name in ('-v', '--version'):
                 msg_exit(VERSION)
             elif name in ('-h', '--help'):
                 msg_exit(HELP)
+            elif name in ('-l', '--list-styles'):
+                msg_exit('\n'.join(sorted(style_names)))
+            elif name in style_opts:
+                self.styles = self.defaults.known_styles.get(name[2:], '')
 
         if len(args) > 1:
             err_exit('viewdoc: too many arguments\n%s' % USAGE)
