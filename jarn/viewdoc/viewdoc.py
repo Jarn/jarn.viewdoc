@@ -254,7 +254,8 @@ class DocumentationViewer(object):
             arg = args[0]
         else:
             arg = os.curdir
-
+        if arg:
+            arg = expanduser(arg)
         if isfile(arg):
             outfile = self.render_file(arg)
         elif isdir(arg):
