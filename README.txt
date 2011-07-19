@@ -10,6 +10,10 @@ reST-formatted text to HTML and displays it in a browser window.
 It is typically used to check a package's long description before
 uploading it to PyPI.
 
+Also see `jarn.mkrelease`_.
+
+.. _`jarn.mkrelease`: http://pypi.python.org/pypi/jarn.mkrelease
+
 Installation
 ============
 
