@@ -96,6 +96,13 @@ class Python(object):
         """
         return {'PYTHONPATH': ':'.join(sys.path)}
 
+    def is_valid_python(self):
+        return sys.version_info[:2] >= (2, 4)
+
+    def check_valid_python(self):
+        if not self.is_valid_python():
+            err_exit('Python >= 2.4 required')
+
 
 class Process(object):
 
@@ -295,8 +302,7 @@ class DocumentationViewer(object):
     def run(self):
         """Render and display Python package documentation.
         """
-        if sys.version_info[:2] < (2, 4):
-            err_exit('Python >= 2.4 required')
+        self.python.check_valid_python()
 
         args = self.parse_options(self.args)
         if args:
@@ -305,6 +311,7 @@ class DocumentationViewer(object):
             arg = os.curdir
         if arg:
             arg = expanduser(arg)
+
         if isfile(arg):
             outfile = self.render_file(arg)
         elif isdir(arg):
