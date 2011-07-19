@@ -5,8 +5,8 @@ jarn.viewdoc
 Preview Python package documentation
 ------------------------------------
 
-**viewdoc** is a package documentation viewer. It converts
-reST-formatted files to HTML and displays them in a browser window.
+**viewdoc** is a Python package documentation viewer. It converts
+reST-formatted text to HTML and displays it in a browser window.
 It is typically used to check a package's long description before
 uploading it to PyPI.
 
@@ -17,8 +17,8 @@ viewdoc requires Python 2.4 or higher. Use ``easy_install jarn.viewdoc`` to
 install the ``viewdoc`` script. Then put it on your system PATH by e.g.
 symlinking it to ``/usr/local/bin``.
 
-**Upgrade Note:** If you have viewdoc 1.0 on your system, you must delete
-your existing ``~/.viewdoc`` file in order to get the updated styles.
+**Upgrade Note:** If you have jarn.viewdoc 1.0 installed, you must delete
+your existing ``~/.viewdoc`` file to get the updated styles.
 
 Usage
 =====
@@ -51,5 +51,6 @@ Options
 Configuration
 =============
 
-The program reads style information from its configuration file
+viewdoc reads style information from its configuration file
 ``~/.viewdoc``. Edit this file to add your own styles.
+
