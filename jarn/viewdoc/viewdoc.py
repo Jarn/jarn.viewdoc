@@ -242,10 +242,10 @@ class DocumentationViewer(object):
                 self.styles = self.defaults.known_styles.get(value, '')
             elif name in ('-l', '--list-styles'):
                 self.list_styles()
-            elif name in ('-v', '--version'):
-                msg_exit(VERSION)
             elif name in ('-h', '--help'):
                 msg_exit(HELP)
+            elif name in ('-v', '--version'):
+                msg_exit(VERSION)
             elif name in style_opts:
                 self.styles = self.defaults.known_styles.get(name[2:], '')
 
