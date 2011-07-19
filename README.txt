@@ -37,7 +37,7 @@ Options
     configuration file setting of the same name.
 
 ``-l, --list-styles``
-    List available styles and exit.
+    Print available styles and exit.
 
 ``-h, --help``
     Print the help message and exit.

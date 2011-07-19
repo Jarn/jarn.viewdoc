@@ -29,7 +29,7 @@ Options:
                       Used to override the configuration file setting of
                       the same name.
 
-  -l, --list-styles   List available styles and exit.
+  -l, --list-styles   Print available styles and exit.
   -h, --help          Print this help message and exit.
   -v, --version       Print the version string and exit.
 
