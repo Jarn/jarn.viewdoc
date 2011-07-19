@@ -7,10 +7,13 @@ Changelog
 - Pass the PYTHONPATH to subprocesses.
   [stefan]
 
-- Make sure to expand tildes in filenames.
+- Avoid temp file when extracting the long description.
   [stefan]
 
-- Avoid a temp file when extracting the long description.
+- Add -l option to list available styles.
+  [stefan]
+
+- Add --*style* shortcut for -s *style*.
   [stefan]
 
 1.1 - 2011-02-08
