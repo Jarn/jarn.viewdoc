@@ -227,7 +227,7 @@ class DocumentationViewer(object):
             os.chdir(dirname)
         try:
             if not isfile('setup.py'):
-                err_exit('Not setup.py found in %s' % os.getcwd())
+                err_exit('No setup.py found in %s' % os.getcwd())
 
             tempdir = abspath(tempfile.mkdtemp(prefix='viewdoc-'))
             try:
