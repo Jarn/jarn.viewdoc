@@ -233,18 +233,28 @@ class DocumentationViewer(object):
         for name, value in options:
             if name in ('-s', '--style'):
                 self.styles = self.defaults.known_styles.get(value, '')
+            elif name in ('-l', '--list-styles'):
+                self.list_styles()
             elif name in ('-v', '--version'):
                 msg_exit(VERSION)
             elif name in ('-h', '--help'):
                 msg_exit(HELP)
-            elif name in ('-l', '--list-styles'):
-                msg_exit('\n'.join(sorted(style_names)))
             elif name in style_opts:
                 self.styles = self.defaults.known_styles.get(name[2:], '')
 
         if len(args) > 1:
             err_exit('viewdoc: too many arguments\n%s' % USAGE)
         return args
+
+    def list_styles(self):
+        """Print available styles and exit.
+        """
+        known = sorted(self.defaults.known_styles)
+        for i, style in enumerate(known):
+            if style == self.defaults.default_style:
+                known[i] += ' (default)'
+                break
+        msg_exit('\n'.join(known))
 
     def render_file(self, filename):
         """Convert a reST file to HTML.
