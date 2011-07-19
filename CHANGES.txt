@@ -4,11 +4,19 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Pass the PYTHONPATH to subprocesses.
+  [stefan]
+
+- Make sure to expand tildes in filenames.
+  [stefan]
+
+- Avoid a temp file when extracting the long description.
+  [stefan]
 
 1.1 - 2011-02-08
 ----------------
 
-- Add ``-s`` option to select styles on the command line.
+- Add -s option to select styles on the command line.
   [stefan]
 
 - In ``pypi`` styles, only underline reference links.
