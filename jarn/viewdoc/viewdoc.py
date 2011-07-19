@@ -18,7 +18,7 @@ from os.path import split, join, isdir, isfile
 from docutils.core import publish_string
 
 VERSION = "jarn.viewdoc %s" % __version__
-USAGE = "Try 'viewdoc --help' for more information."
+USAGE = "Try 'viewdoc --help' for more information"
 
 HELP = """\
 Usage: viewdoc [options] [rst-file|egg-dir]
