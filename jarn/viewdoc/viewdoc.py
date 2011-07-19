@@ -7,15 +7,12 @@ __version__ = pkg_resources.get_distribution('jarn.viewdoc').version
 import sys
 import os
 import getopt
-import tempfile
-import shutil
-import subprocess
 import webbrowser
 import ConfigParser
 
 from os.path import abspath, expanduser, dirname, basename
 from os.path import split, join, isdir, isfile
-
+from subprocess import Popen, PIPE
 from docutils.core import publish_string
 
 VERSION = "jarn.viewdoc %s" % __version__
@@ -144,12 +141,12 @@ class Process(object):
     def __init__(self, env=None):
         self.env = env
 
-    def system(self, cmd):
-        """Execute an external command.
+    def popen(self, cmd):
+        """Execute an external command and return (rc, output).
         """
-        process = subprocess.Popen(cmd, shell=True, env=self.env)
-        process.communicate()
-        return process.returncode
+        process = Popen(cmd, shell=True, stdout=PIPE, env=self.env)
+        stdoutdata, stderrdata = process.communicate()
+        return process.returncode, stdoutdata
 
 
 class Docutils(object):
@@ -178,7 +175,7 @@ class Docutils(object):
         except (IOError, OSError), e:
             err_exit('%s: %s' % (e.strerror or e, outfile))
 
-    def publish_string(self, rest):
+    def convert_string(self, rest):
         """Convert a reST string to an HTML string.
         """
         try:
@@ -194,13 +191,19 @@ class Docutils(object):
             return html
         return ''.join((html[:index], styles, html[index:]))
 
-    def run(self, infile, outfile, styles=''):
+    def publish_string(self, rest, outfile, styles=''):
+        """Render a reST string as HTML.
+        """
+        html = self.convert_string(rest)
+        html = self.apply_styles(html, styles)
+        self.write_file(html, outfile)
+        return outfile
+
+    def publish_file(self, infile, outfile, styles=''):
         """Render a reST file as HTML.
         """
         rest = self.read_file(infile)
-        html = self.publish_string(rest)
-        html = self.apply_styles(html, styles)
-        self.write_file(html, outfile)
+        return self.publish_string(rest, outfile, styles)
 
 
 class DocumentationViewer(object):
@@ -245,7 +248,7 @@ class DocumentationViewer(object):
         try:
             infile = abspath(basename)
             outfile = abspath('.%s.html' % basename)
-            self.docutils.run(infile, outfile, self.styles)
+            self.docutils.publish_file(infile, outfile, self.styles)
             return outfile
         finally:
             os.chdir(saved)
@@ -260,18 +263,14 @@ class DocumentationViewer(object):
             if not isfile('setup.py'):
                 err_exit('No setup.py found in %s' % os.getcwd())
 
-            tempdir = abspath(tempfile.mkdtemp(prefix='viewdoc-'))
-            try:
-                infile = join(tempdir, 'long-description.rst')
-                outfile = abspath('.long-description.html')
-                rc = self.process.system(
-                    '"%s" setup.py --long-description > "%s"' % (self.python, infile))
-                if rc != 0:
-                    err_exit('Failed to get long description', rc)
-                self.docutils.run(infile, outfile, self.styles)
-                return outfile
-            finally:
-                shutil.rmtree(tempdir)
+            rc, long_description = self.process.popen(
+                '"%s" setup.py --long-description' % self.python)
+            if rc != 0:
+                err_exit('Bad setup.py')
+
+            outfile = abspath('.long-description.html')
+            self.docutils.publish_string(long_description, outfile, self.styles)
+            return outfile
         finally:
             os.chdir(saved)
 
