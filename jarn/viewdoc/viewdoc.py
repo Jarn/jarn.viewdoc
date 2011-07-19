@@ -9,6 +9,7 @@ import os
 import getopt
 import tempfile
 import shutil
+import subprocess
 import webbrowser
 import ConfigParser
 
@@ -123,6 +124,34 @@ class Defaults(object):
             print >>sys.stderr, '%s: %s' % (e.strerror or e, filename)
 
 
+class Python(object):
+
+    @property
+    def python(self):
+        return sys.executable
+
+    def __str__(self):
+        return self.python
+
+    def get_env(self):
+        """Get environment for Python subprocesses.
+        """
+        return {'PYTHONPATH': ':'.join(sys.path)}
+
+
+class Process(object):
+
+    def __init__(self, env=None):
+        self.env = env
+
+    def system(self, cmd):
+        """Execute an external command.
+        """
+        process = subprocess.Popen(cmd, shell=True, env=self.env)
+        process.communicate()
+        return process.returncode
+
+
 class Docutils(object):
 
     def read_file(self, infile):
@@ -180,6 +209,8 @@ class DocumentationViewer(object):
         """Set defaults.
         """
         self.defaults = Defaults()
+        self.python = Python()
+        self.process = Process(env=self.python.get_env())
         self.docutils = Docutils()
         self.styles = self.defaults.styles
         self.args = args
@@ -233,9 +264,10 @@ class DocumentationViewer(object):
             try:
                 infile = join(tempdir, 'long-description.rst')
                 outfile = abspath('.long-description.html')
-                rc = os.system('"%s" setup.py --long-description > "%s"' % (sys.executable, infile))
+                rc = self.process.system(
+                    '"%s" setup.py --long-description > "%s"' % (self.python, infile))
                 if rc != 0:
-                    err_exit('HTML conversion failed with error: %s' % rc)
+                    err_exit('Failed to get long description', rc)
                 self.docutils.run(infile, outfile, self.styles)
                 return outfile
             finally:
