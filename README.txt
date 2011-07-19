@@ -1,11 +1,11 @@
 ============
 jarn.viewdoc
 ============
----------------------------------
-View Python package documentation
----------------------------------
+------------------------------------
+Preview Python package documentation
+------------------------------------
 
-**viewdoc** is a Python package documentation viewer. It converts
+**viewdoc** is a package documentation viewer. It converts
 reST-formatted files to HTML and displays them in a browser window.
 It is typically used to check a package's long description before
 uploading it to PyPI.
@@ -49,5 +49,4 @@ Configuration
 =============
 
 The program reads style information from its configuration file
-``~/.viewdoc``. Edit this file to change the defaults and to add your own
-styles.
+``~/.viewdoc``. Edit this file to add your own styles.

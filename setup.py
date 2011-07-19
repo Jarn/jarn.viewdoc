@@ -4,7 +4,7 @@ version = '1.2'
 
 setup(name='jarn.viewdoc',
       version=version,
-      description='View Python package documentation',
+      description='Preview Python package documentation',
       long_description=open('README.txt').read() + '\n' +
                        open('CHANGES.txt').read(),
       classifiers=[
