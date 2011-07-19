@@ -82,45 +82,6 @@ def err_exit(msg, rc=1):
     sys.exit(rc)
 
 
-class Defaults(object):
-
-    def __init__(self):
-        """Read the config file.
-        """
-        filename = expanduser('~/.viewdoc')
-        if not isfile(filename):
-            self.write_default_config(filename)
-
-        parser = ConfigParser.ConfigParser()
-        parser.read(filename)
-
-        def get(section, key, default=None):
-            if parser.has_option(section, key):
-                return parser.get(section, key)
-            return default
-
-        self.known_styles = {}
-        if parser.has_section('styles'):
-            for key, value in parser.items('styles'):
-                self.known_styles[key] = value.strip()+'\n'
-
-        self.default_style = get('viewdoc', 'style', 'pypi')
-        self.known_styles.setdefault('pypi', PYPI)
-        self.styles = self.known_styles.get(self.default_style, '')
-
-    def write_default_config(self, filename):
-        """Write the default config file.
-        """
-        try:
-            f = open(filename, 'wt')
-            try:
-                f.write(CONFIG)
-            finally:
-                f.close()
-        except (IOError, OSError), e:
-            print >>sys.stderr, '%s: %s' % (e.strerror or e, filename)
-
-
 class Python(object):
 
     @property
@@ -204,6 +165,45 @@ class Docutils(object):
         """
         rest = self.read_file(infile)
         return self.publish_string(rest, outfile, styles)
+
+
+class Defaults(object):
+
+    def __init__(self):
+        """Read the config file.
+        """
+        filename = expanduser('~/.viewdoc')
+        if not isfile(filename):
+            self.write_default_config(filename)
+
+        parser = ConfigParser.ConfigParser()
+        parser.read(filename)
+
+        def get(section, key, default=None):
+            if parser.has_option(section, key):
+                return parser.get(section, key)
+            return default
+
+        self.known_styles = {}
+        if parser.has_section('styles'):
+            for key, value in parser.items('styles'):
+                self.known_styles[key] = value.strip()+'\n'
+
+        self.default_style = get('viewdoc', 'style', 'pypi')
+        self.known_styles.setdefault('pypi', PYPI)
+        self.styles = self.known_styles.get(self.default_style, '')
+
+    def write_default_config(self, filename):
+        """Write the default config file.
+        """
+        try:
+            f = open(filename, 'wt')
+            try:
+                f.write(CONFIG)
+            finally:
+                f.close()
+        except (IOError, OSError), e:
+            print >>sys.stderr, '%s: %s' % (e.strerror or e, filename)
 
 
 class DocumentationViewer(object):
