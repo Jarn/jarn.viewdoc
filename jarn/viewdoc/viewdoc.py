@@ -38,6 +38,12 @@ Options:
                       Defaults to the current working directory.
 """
 
+PLAIN = """\
+<style type="text/css">
+body { margin-left: 10em; margin-right: 10em; }
+</style>
+"""
+
 PYPI = """\
 <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
 <style type="text/css">
@@ -48,7 +54,17 @@ a.reference { border-bottom: 1px dashed #cccccc; }
 </style>
 """
 
-CONFIG = """\
+SMALL = """\
+<link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
+<style type="text/css">
+body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
+a:link { text-decoration: none; color: #0000aa; }
+a:visited { text-decoration: none; color: #551a8b; }
+a.reference { border-bottom: 1px dashed #cccccc; }
+</style>
+"""
+
+DEFAULT_CONFIG = """\
 [viewdoc]
 style = pypi
 
@@ -61,6 +77,14 @@ pypi =
     <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
     <style type="text/css">
     body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
+    a:link { text-decoration: none; color: #0000aa; }
+    a:visited { text-decoration: none; color: #551a8b; }
+    a.reference { border-bottom: 1px dashed #cccccc; }
+    </style>
+small =
+    <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
+    <style type="text/css">
+    body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
     a:link { text-decoration: none; color: #0000aa; }
     a:visited { text-decoration: none; color: #551a8b; }
     a.reference { border-bottom: 1px dashed #cccccc; }
@@ -206,7 +230,7 @@ class Defaults(object):
         try:
             f = open(filename, 'wt')
             try:
-                f.write(CONFIG)
+                f.write(DEFAULT_CONFIG)
             finally:
                 f.close()
         except (IOError, OSError), e:
