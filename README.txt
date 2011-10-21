@@ -21,7 +21,7 @@ viewdoc requires Python 2.4 or higher. Use ``easy_install jarn.viewdoc`` to
 install the ``viewdoc`` script. Then put it on your system PATH by e.g.
 symlinking it to ``/usr/local/bin``.
 
-**Upgrade Note:** If you have jarn.viewdoc < 1.3 installed, please move away
+**Upgrade Note:** If you have jarn.viewdoc < 1.3 installed, move away
 your existing ``~/.viewdoc`` file to get the updated styles.
 
 Usage
