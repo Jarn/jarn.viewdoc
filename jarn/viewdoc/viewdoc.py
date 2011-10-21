@@ -115,11 +115,6 @@ class Python(object):
     def __str__(self):
         return self.python
 
-    def get_env(self):
-        """Get environment for Python subprocesses.
-        """
-        return {'PYTHONPATH': ':'.join(sys.path)}
-
     def is_valid_python(self):
         return sys.version_info[:2] >= (2, 4)
 
@@ -139,6 +134,41 @@ class Process(object):
         process = Popen(cmd, shell=True, stdout=PIPE, env=self.env)
         stdoutdata, stderrdata = process.communicate()
         return process.returncode, stdoutdata
+
+
+class Setuptools(object):
+
+    def __init__(self):
+        self.python = Python()
+        self.process = Process(env=self.get_env())
+
+    def get_env(self):
+        # Make sure setuptools is found if mkrelease has
+        # been installed with zc.buildout
+        path = []
+        for name in ('setuptools',):
+            try:
+                dist = pkg_resources.get_distribution(name)
+            except pkg_resources.DistributionNotFound:
+                continue
+            path.append(dist.location)
+        env = os.environ.copy()
+        env['PYTHONPATH'] = ':'.join(path)
+        return env
+
+    def is_valid_package(self):
+        return isfile('setup.py')
+
+    def check_valid_package(self):
+        if not self.is_valid_package():
+            err_exit('No setup.py found in %s' % os.getcwd())
+
+    def get_long_description(self):
+        rc, long_description = self.process.popen(
+            '"%s" setup.py --long-description' % self.python)
+        if rc != 0:
+            err_exit('Bad setup.py')
+        return long_description
 
 
 class Docutils(object):
@@ -244,7 +274,7 @@ class DocumentationViewer(object):
         """
         self.defaults = Defaults()
         self.python = Python()
-        self.process = Process(env=self.python.get_env())
+        self.setuptools = Setuptools()
         self.docutils = Docutils()
         self.styles = self.defaults.styles
         self.args = args
@@ -309,14 +339,8 @@ class DocumentationViewer(object):
         if dirname:
             os.chdir(dirname)
         try:
-            if not isfile('setup.py'):
-                err_exit('No setup.py found in %s' % os.getcwd())
-
-            rc, long_description = self.process.popen(
-                '"%s" setup.py --long-description' % self.python)
-            if rc != 0:
-                err_exit('Bad setup.py')
-
+            self.setuptools.check_valid_package()
+            long_description = self.setuptools.get_long_description()
             outfile = abspath('.long-description.html')
             self.docutils.publish_string(long_description, outfile, self.styles)
             return outfile
