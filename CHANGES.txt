@@ -4,6 +4,9 @@ Changelog
 1.3 - Unreleased
 ----------------
 
+- Be more careful with what we put on the PYTHONPATH.
+  [stefan]
+
 - Add ``small`` style to the default config.
   [stefan]
 
