@@ -131,11 +131,11 @@ class Python(object):
         return self.python
 
     def is_valid_python(self):
-        return sys.version_info[:2] >= (2, 4)
+        return sys.version_info[:2] >= (2, 5)
 
     def check_valid_python(self):
         if not self.is_valid_python():
-            err_exit('Python >= 2.4 required')
+            err_exit('Python >= 2.5 required')
 
 
 class Process(object):
