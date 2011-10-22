@@ -107,18 +107,17 @@ def err_exit(msg, rc=1):
 
 
 class changedir(object):
+    """Change directory."""
 
     def __init__(self, dir):
-        self.saved = os.getcwd()
-        self.dir = dir
+        self.old = os.getcwd()
+        self.dir = dir or self.old
 
     def __enter__(self):
-        if self.dir:
-            os.chdir(self.dir)
+        os.chdir(self.dir)
 
     def __exit__(self, *ignored):
-        if self.dir:
-            os.chdir(self.saved)
+        os.chdir(self.old)
 
 
 class Python(object):
