@@ -106,7 +106,7 @@ def err_exit(msg, rc=1):
     sys.exit(rc)
 
 
-class chdir(object):
+class changedir(object):
 
     def __init__(self, dir):
         self.saved = os.getcwd()
@@ -336,7 +336,7 @@ class DocumentationViewer(object):
         """Convert a reST file to HTML.
         """
         dirname, basename = split(filename)
-        with chdir(dirname):
+        with changedir(dirname):
             infile = abspath(basename)
             outfile = abspath('.%s.html' % basename)
             self.docutils.publish_file(infile, outfile, self.styles)
@@ -345,7 +345,7 @@ class DocumentationViewer(object):
     def render_long_description(self, dirname):
         """Convert a package's long description to HTML.
         """
-        with chdir(dirname):
+        with changedir(dirname):
             self.setuptools.check_valid_package()
             long_description = self.setuptools.get_long_description()
             outfile = abspath('.long-description.html')
