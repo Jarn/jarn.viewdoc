@@ -106,6 +106,21 @@ def err_exit(msg, rc=1):
     sys.exit(rc)
 
 
+class chdir(object):
+
+    def __init__(self, dir):
+        self.saved = os.getcwd()
+        self.dir = dir
+
+    def __enter__(self):
+        if self.dir:
+            os.chdir(self.dir)
+
+    def __exit__(self, *ignored):
+        if self.dir:
+            os.chdir(self.saved)
+
+
 class Python(object):
 
     @property
@@ -320,32 +335,22 @@ class DocumentationViewer(object):
     def render_file(self, filename):
         """Convert a reST file to HTML.
         """
-        saved = os.getcwd()
         dirname, basename = split(filename)
-        if dirname:
-            os.chdir(dirname)
-        try:
+        with chdir(dirname):
             infile = abspath(basename)
             outfile = abspath('.%s.html' % basename)
             self.docutils.publish_file(infile, outfile, self.styles)
             return outfile
-        finally:
-            os.chdir(saved)
 
     def render_long_description(self, dirname):
         """Convert a package's long description to HTML.
         """
-        saved = os.getcwd()
-        if dirname:
-            os.chdir(dirname)
-        try:
+        with chdir(dirname):
             self.setuptools.check_valid_package()
             long_description = self.setuptools.get_long_description()
             outfile = abspath('.long-description.html')
             self.docutils.publish_string(long_description, outfile, self.styles)
             return outfile
-        finally:
-            os.chdir(saved)
 
     def run(self):
         """Render and display Python package documentation.
