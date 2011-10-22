@@ -17,7 +17,7 @@ Also see `jarn.mkrelease`_.
 Installation
 ============
 
-viewdoc requires Python 2.4 or higher. Use ``easy_install jarn.viewdoc`` to
+viewdoc requires Python 2.6 or 2.7. Use ``easy_install jarn.viewdoc`` to
 install the ``viewdoc`` script. Then put it on your system PATH by e.g.
 symlinking it to ``/usr/local/bin``.
 
