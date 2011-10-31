@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.3 - Unreleased
+1.3 - 2011-10-31
 ----------------
 
 - Be more careful with what we put on the PYTHONPATH.
