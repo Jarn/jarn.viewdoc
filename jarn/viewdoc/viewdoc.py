@@ -154,8 +154,8 @@ class Process(object):
 class Setuptools(object):
 
     def __init__(self):
-        self.python = Python()
         self.process = Process(env=self.get_env())
+        self.python = Python()
 
     def get_env(self):
         # Make sure setuptools is found if mkrelease has
