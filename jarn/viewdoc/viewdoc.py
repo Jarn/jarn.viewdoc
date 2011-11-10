@@ -122,16 +122,16 @@ class changedir(object):
 
 class Python(object):
 
-    @property
-    def python(self):
-        return sys.executable
+    def __init__(self):
+        self.python = sys.executable
+        self.version_info = sys.version_info
 
     def __str__(self):
         return self.python
 
     def is_valid_python(self):
-        return (sys.version_info[:2] >= (2, 5) and
-                sys.version_info[:2] < (3, 0))
+        return (self.version_info[:2] >= (2, 5) and
+                self.version_info[:2] < (3, 0))
 
     def check_valid_python(self):
         if not self.is_valid_python():
