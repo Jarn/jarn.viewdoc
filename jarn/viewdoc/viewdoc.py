@@ -34,8 +34,8 @@ Options:
   -v, --version       Print the version string and exit.
 
   rst-file            reST file to view.
-  egg-dir             Package whose long description to view.
-                      Defaults to the current working directory.
+  egg-dir             Package whose long description to view. Defaults to
+                      the current working directory.
 """
 
 PLAIN = """\
