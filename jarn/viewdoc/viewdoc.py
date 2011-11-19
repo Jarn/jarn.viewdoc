@@ -265,8 +265,8 @@ class Defaults(object):
             for key, value in parser.items('styles'):
                 self.known_styles[key] = value.strip()+'\n'
 
-        self.default_style = get('viewdoc', 'style', 'pypi')
         self.known_styles.setdefault('pypi', PYPI)
+        self.default_style = get('viewdoc', 'style', 'pypi').lstrip()
         self.styles = self.known_styles.get(self.default_style, '')
 
     def write_default_config(self, filename):
