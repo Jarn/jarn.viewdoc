@@ -106,6 +106,12 @@ def err_exit(msg, rc=1):
     sys.exit(rc)
 
 
+def warn(msg):
+    """Print warning msg to stderr.
+    """
+    print >>sys.stderr, 'WARNING:', msg
+
+
 class changedir(object):
     """Change directory."""
 
@@ -253,7 +259,10 @@ class Defaults(object):
             self.write_default_config(filename)
 
         parser = ConfigParser.ConfigParser()
-        parser.read(filename)
+        try:
+            parser.read(filename)
+        except ConfigParser.Error, e:
+            warn(str(e))
 
         def get(section, key, default=None):
             if parser.has_option(section, key):
