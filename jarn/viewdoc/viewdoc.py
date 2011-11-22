@@ -198,11 +198,8 @@ class Docutils(object):
         """Read a reST file into a string.
         """
         try:
-            f = open(infile, 'rt')
-            try:
-                return f.read()
-            finally:
-                f.close()
+            with open(infile, 'rt') as file:
+                return file.read()
         except (IOError, OSError), e:
             err_exit('%s: %s' % (e.strerror or e, infile))
 
@@ -210,11 +207,8 @@ class Docutils(object):
         """Write an HTML string to a file.
         """
         try:
-            f = open(outfile, 'wt')
-            try:
-                f.write(html)
-            finally:
-                f.close()
+            with open(outfile, 'wt') as file:
+                file.write(html)
         except (IOError, OSError), e:
             err_exit('%s: %s' % (e.strerror or e, outfile))
 
@@ -282,11 +276,8 @@ class Defaults(object):
         """Write the default config file.
         """
         try:
-            f = open(filename, 'wt')
-            try:
-                f.write(DEFAULT_CONFIG)
-            finally:
-                f.close()
+            with open(filename, 'wt') as file:
+                file.write(DEFAULT_CONFIG)
         except (IOError, OSError), e:
             print >>sys.stderr, '%s: %s' % (e.strerror or e, filename)
 
