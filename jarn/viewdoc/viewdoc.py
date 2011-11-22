@@ -325,12 +325,12 @@ class DocumentationViewer(object):
     def list_styles(self):
         """Print available styles and exit.
         """
-        known = sorted(self.defaults.known_styles)
-        for i, style in enumerate(known):
+        for style in sorted(self.defaults.known_styles):
             if style == self.defaults.default_style:
-                known[i] += ' (default)'
-                break
-        msg_exit('\n'.join(known))
+                print style, '(default)'
+            else:
+                print style
+        sys.exit(0)
 
     def render_file(self, filename):
         """Convert a reST file to HTML.
