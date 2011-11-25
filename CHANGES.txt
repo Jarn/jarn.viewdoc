@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.4 - Unreleased
+1.4 - 2011-11-25
 ----------------
 
 - Warn if ``~/.viewdoc`` has errors instead of raising an exception.
