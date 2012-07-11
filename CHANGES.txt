@@ -4,6 +4,8 @@ Changelog
 1.5 - Unreleased
 ----------------
 
+- Restore Python 2.5 compatibility.
+  [stefan]
 
 1.4 - 2011-11-25
 ----------------
