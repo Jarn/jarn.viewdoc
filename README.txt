@@ -2,7 +2,7 @@
 jarn.viewdoc
 ============
 ------------------------------------
-Preview Python package documentation
+Python documentation viewer
 ------------------------------------
 
 **viewdoc** is a Python package documentation viewer. It converts
