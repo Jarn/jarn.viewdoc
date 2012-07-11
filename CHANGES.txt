@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5 - Unreleased
+1.5 - 2012-07-11
 ----------------
 
 - Restore Python 2.5 compatibility.
