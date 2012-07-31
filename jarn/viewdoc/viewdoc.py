@@ -94,12 +94,6 @@ small =
     </style>
 """
 
-if sys.version_info[0] >= 3:
-    PLAIN = PLAIN.replace('%', '%%')
-    PYPI = PYPI.replace('%', '%%')
-    SMALL = SMALL.replace('%', '%%')
-    DEFAULT_CONFIG = DEFAULT_CONFIG.replace('%', '%%')
-
 
 def msg_exit(msg, rc=0):
     """Print msg to stdout and exit with rc.
@@ -265,6 +259,18 @@ class Docutils(object):
         return self.publish_string(rest, outfile, styles)
 
 
+class errors2warnings(object):
+    """Turn ConfigParser.Errors into warnings."""
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, type, value, tb):
+        if isinstance(value, ConfigParser.Error):
+            warn(str(value))
+            return True
+
+
 class Defaults(object):
 
     def __init__(self):
@@ -274,30 +280,20 @@ class Defaults(object):
         if not isfile(filename):
             self.write_default_config(filename)
 
-        exceptions = (ConfigParser.Error,)
-        if sys.version_info[0] >= 3:
-            exceptions += (configparser.InterpolationSyntaxError,)
-
         parser = ConfigParser.ConfigParser()
-        try:
+        with errors2warnings():
             parser.read(filename)
-        except exceptions, e:
-            warn(str(e))
 
         def get(section, key, default=None):
             if parser.has_option(section, key):
-                try:
-                    return parser.get(section, key)
-                except exceptions, e:
-                    warn(str(e))
+                with errors2warnings():
+                    return parser.get(section, key, raw=True)
             return default
 
         def getitems(section, default=None):
             if parser.has_section(section):
-                try:
-                    return parser.items(section)
-                except exceptions, e:
-                    warn(str(e))
+                with errors2warnings():
+                    return parser.items(section, raw=True)
             return default
 
         self.known_styles = {}
