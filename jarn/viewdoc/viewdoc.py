@@ -276,7 +276,7 @@ class Defaults(object):
 
         exceptions = (ConfigParser.Error,)
         if sys.version_info[0] >= 3:
-            exceptions = exceptions + (configparser.InterpolationSyntaxError,)
+            exceptions += (configparser.InterpolationSyntaxError,)
 
         parser = ConfigParser.ConfigParser()
         try:
@@ -286,7 +286,10 @@ class Defaults(object):
 
         def get(section, key, default=None):
             if parser.has_option(section, key):
-                return parser.get(section, key)
+                try:
+                    return parser.get(section, key)
+                except exceptions, e:
+                    warn(str(e))
             return default
 
         def getitems(section, default=None):
