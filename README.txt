@@ -24,11 +24,6 @@ symlinking it to ``/usr/local/bin``.
 **Upgrade Note:** If you have jarn.viewdoc < 1.3 installed, move away
 your existing ``~/.viewdoc`` file to get the updated styles.
 
-**Upgrade Note:** If you switch to Python 3, move away your existing
-``~/.viewdoc`` file before running ``viewdoc`` for the first time. The
-quoting requirements for ConfigParser have changed in Python 3, and it
-won't be able to parse old config files containing unquoted '%' characters.
-
 Usage
 =====
 
