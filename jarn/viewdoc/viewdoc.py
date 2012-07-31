@@ -49,7 +49,7 @@ body { margin-left: 10em; margin-right: 10em; }
 PYPI = """\
 <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
 <style type="text/css">
-body { margin-left: 10em; margin-right: 10em; font-size: 95%%; }
+body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
 a:link { text-decoration: none; color: #0000aa; }
 a:visited { text-decoration: none; color: #551a8b; }
 a.reference { border-bottom: 1px dashed #cccccc; }
@@ -59,7 +59,7 @@ a.reference { border-bottom: 1px dashed #cccccc; }
 SMALL = """\
 <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
 <style type="text/css">
-body { margin-left: 10em; margin-right: 10em; font-size: 90%%; }
+body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
 a:link { text-decoration: none; color: #0000aa; }
 a:visited { text-decoration: none; color: #551a8b; }
 a.reference { border-bottom: 1px dashed #cccccc; }
@@ -78,7 +78,7 @@ plain =
 pypi =
     <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
     <style type="text/css">
-    body { margin-left: 10em; margin-right: 10em; font-size: 95%%; }
+    body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
     a:link { text-decoration: none; color: #0000aa; }
     a:visited { text-decoration: none; color: #551a8b; }
     a.reference { border-bottom: 1px dashed #cccccc; }
@@ -86,12 +86,18 @@ pypi =
 small =
     <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
     <style type="text/css">
-    body { margin-left: 10em; margin-right: 10em; font-size: 90%%; }
+    body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
     a:link { text-decoration: none; color: #0000aa; }
     a:visited { text-decoration: none; color: #551a8b; }
     a.reference { border-bottom: 1px dashed #cccccc; }
     </style>
 """
+
+if sys.version_info[0] >= 3:
+    PLAIN = PLAIN.replace('%', '%%')
+    PYPI = PYPI.replace('%', '%%')
+    SMALL = SMALL.replace('%', '%%')
+    DEFAULT_CONFIG = DEFAULT_CONFIG.replace('%', '%%')
 
 
 def msg_exit(msg, rc=0):
