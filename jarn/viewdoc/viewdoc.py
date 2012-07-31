@@ -49,7 +49,7 @@ body { margin-left: 10em; margin-right: 10em; }
 PYPI = """\
 <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
 <style type="text/css">
-body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
+body { margin-left: 10em; margin-right: 10em; font-size: 95%%; }
 a:link { text-decoration: none; color: #0000aa; }
 a:visited { text-decoration: none; color: #551a8b; }
 a.reference { border-bottom: 1px dashed #cccccc; }
@@ -59,7 +59,7 @@ a.reference { border-bottom: 1px dashed #cccccc; }
 SMALL = """\
 <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
 <style type="text/css">
-body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
+body { margin-left: 10em; margin-right: 10em; font-size: 90%%; }
 a:link { text-decoration: none; color: #0000aa; }
 a:visited { text-decoration: none; color: #551a8b; }
 a.reference { border-bottom: 1px dashed #cccccc; }
@@ -78,7 +78,7 @@ plain =
 pypi =
     <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
     <style type="text/css">
-    body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
+    body { margin-left: 10em; margin-right: 10em; font-size: 95%%; }
     a:link { text-decoration: none; color: #0000aa; }
     a:visited { text-decoration: none; color: #551a8b; }
     a.reference { border-bottom: 1px dashed #cccccc; }
@@ -86,7 +86,7 @@ pypi =
 small =
     <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
     <style type="text/css">
-    body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
+    body { margin-left: 10em; margin-right: 10em; font-size: 90%%; }
     a:link { text-decoration: none; color: #0000aa; }
     a:visited { text-decoration: none; color: #551a8b; }
     a.reference { border-bottom: 1px dashed #cccccc; }
@@ -138,12 +138,11 @@ class Python(object):
         return self.python
 
     def is_valid_python(self):
-        return (self.version_info[:2] >= (2, 5) and
-                self.version_info[:2] < (3, 0))
+        return (self.version_info[:2] >= (2, 5))
 
     def check_valid_python(self):
         if not self.is_valid_python():
-            err_exit('Python 2.5, 2.6, or 2.7 required')
+            err_exit('Python >= 2.5 required')
 
 
 class Process(object):
@@ -218,22 +217,34 @@ class Docutils(object):
         """Convert a reST string to an HTML string.
         """
         try:
-            return publish_string(rest, writer_name='html')
+            html = publish_string(rest, writer_name='html')
         except SystemExit, e:
             err_exit('HTML conversion failed with error: %s' % e.code)
+        else:
+            if sys.version_info[0] >= 3:
+                return html.decode('utf-8', 'strict')
+            return html
+
+    def strip_xml_header(self, html):
+        """Strip any <?xml version="1.0" encoding="utf-8" ?> header.
+        """
+        if html.startswith('<?xml '):
+            return html.split('\n', 1)[1]
+        return html
 
     def apply_styles(self, html, styles):
         """Insert style information into the HTML string.
         """
         index = html.find('</head>')
-        if index < 0:
-            return html
-        return ''.join((html[:index], styles, html[index:]))
+        if index >= 0:
+            return ''.join((html[:index], styles, html[index:]))
+        return html
 
     def publish_string(self, rest, outfile, styles=''):
         """Render a reST string as HTML.
         """
         html = self.convert_string(rest)
+        html = self.strip_xml_header(html)
         html = self.apply_styles(html, styles)
         self.write_file(html, outfile)
         return outfile
@@ -254,10 +265,14 @@ class Defaults(object):
         if not isfile(filename):
             self.write_default_config(filename)
 
+        exceptions = (ConfigParser.Error,)
+        if sys.version_info[0] >= 3:
+            exceptions = exceptions + (configparser.InterpolationSyntaxError,)
+
         parser = ConfigParser.ConfigParser()
         try:
             parser.read(filename)
-        except ConfigParser.Error, e:
+        except exceptions, e:
             warn(str(e))
 
         def get(section, key, default=None):
@@ -265,12 +280,20 @@ class Defaults(object):
                 return parser.get(section, key)
             return default
 
+        def getitems(section, default=None):
+            if parser.has_section(section):
+                try:
+                    return parser.items(section)
+                except exceptions, e:
+                    warn(str(e))
+            return default
+
         self.known_styles = {}
-        if parser.has_section('styles'):
-            for key, value in parser.items('styles'):
-                self.known_styles[key] = value.strip()+'\n'
+        for key, value in getitems('styles', []):
+            self.known_styles[key] = value.strip()+'\n'
 
         self.known_styles.setdefault('pypi', PYPI)
+
         self.default_style = get('viewdoc', 'style', 'pypi').strip()
         self.styles = self.known_styles.get(self.default_style, '')
 
