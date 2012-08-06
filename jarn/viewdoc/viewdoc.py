@@ -16,7 +16,6 @@ from os.path import abspath, expanduser, dirname, basename
 from os.path import split, join, isdir, isfile
 from subprocess import Popen, PIPE
 from docutils.core import publish_string
-from utils import decode
 
 VERSION = "jarn.viewdoc %s" % __version__
 USAGE = "Try 'viewdoc --help' for more information"
@@ -156,8 +155,6 @@ class Process(object):
         """
         process = Popen(cmd, shell=True, stdout=PIPE, env=self.env)
         stdoutdata, stderrdata = process.communicate()
-        if sys.version_info[0] >= 3:
-            stdoutdata = decode(stdoutdata)
         return process.returncode, stdoutdata
 
 
@@ -193,6 +190,8 @@ class Setuptools(object):
             '"%s" setup.py --long-description' % self.python)
         if rc != 0:
             err_exit('Bad setup.py')
+        if sys.version_info[0] >= 3:
+            return long_description.decode('utf-8', 'strict')
         return long_description
 
 
