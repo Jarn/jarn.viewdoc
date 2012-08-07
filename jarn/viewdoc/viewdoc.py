@@ -11,6 +11,7 @@ import os
 import getopt
 import webbrowser
 import ConfigParser
+import functools
 
 from os.path import abspath, expanduser, dirname, basename
 from os.path import split, join, isdir, isfile
@@ -203,20 +204,26 @@ class Docutils(object):
     def read_file(self, infile):
         """Read a reST file into a string.
         """
+        if sys.version_info[0] >= 3:
+            open = functools.partial(open, encoding='utf-8')
         try:
             with open(infile, 'rt') as file:
                 return file.read()
+        except UnicodeDecodeError, e:
+            err_exit('Error decoding %s: %s' % (infile, e))
         except (IOError, OSError), e:
-            err_exit('%s: %s' % (e.strerror or e, infile))
+            err_exit('Error reading %s: %s' % (infile, e.strerror or e))
 
     def write_file(self, html, outfile):
         """Write an HTML string to a file.
         """
+        if sys.version_info[0] >= 3:
+            open = functools.partial(open, encoding='utf-8')
         try:
             with open(outfile, 'wt') as file:
                 file.write(html)
         except (IOError, OSError), e:
-            err_exit('%s: %s' % (e.strerror or e, outfile))
+            err_exit('Error writing %s: %s' % (outfile, e.strerror or e))
 
     def convert_string(self, rest):
         """Convert a reST string to an HTML string.
@@ -312,11 +319,13 @@ class Defaults(object):
     def write_default_config(self, filename):
         """Write the default config file.
         """
+        if sys.version_info[0] >= 3:
+            open = functools.partial(open, encoding='utf-8')
         try:
             with open(filename, 'wt') as file:
                 file.write(DEFAULT_CONFIG)
         except (IOError, OSError), e:
-            print >>sys.stderr, '%s: %s' % (e.strerror or e, filename)
+            print >>sys.stderr, 'Error writing %s: %s' % (filename, e.strerror or e)
 
 
 class DocumentationViewer(object):
