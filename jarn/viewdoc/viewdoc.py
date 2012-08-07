@@ -191,7 +191,10 @@ class Setuptools(object):
         if rc != 0:
             err_exit('Bad setup.py')
         if sys.version_info[0] >= 3:
-            return long_description.decode('utf-8', 'strict')
+            try:
+                return long_description.decode('utf-8', 'strict')
+            except UnicodeDecodeError, e:
+                err_exit('Error decoding long description: %s' % (e,))
         return long_description
 
 
