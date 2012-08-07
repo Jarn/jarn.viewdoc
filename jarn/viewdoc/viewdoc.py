@@ -11,15 +11,12 @@ import os
 import getopt
 import webbrowser
 import ConfigParser
-import functools
 
 from os.path import abspath, expanduser, dirname, basename
 from os.path import split, join, isdir, isfile
 from subprocess import Popen, PIPE
+from contextlib import closing
 from docutils.core import publish_string
-
-if sys.version_info[0] >= 3:
-    import builtins
 
 VERSION = "jarn.viewdoc %s" % __version__
 USAGE = "Try 'viewdoc --help' for more information"
@@ -207,10 +204,12 @@ class Docutils(object):
     def read_file(self, infile):
         """Read a reST file into a string.
         """
-        if sys.version_info[0] >= 3:
-            open = functools.partial(builtins.open, encoding='utf-8')
         try:
-            with open(infile, 'rt') as file:
+            if sys.version_info[0] >= 3:
+                file = open(infile, 'rt', encoding='utf-8')
+            else:
+                file = open(infile, 'rt')
+            with closing(file):
                 return file.read()
         except UnicodeDecodeError, e:
             err_exit('Error decoding %s: %s' % (infile, e))
@@ -220,10 +219,12 @@ class Docutils(object):
     def write_file(self, html, outfile):
         """Write an HTML string to a file.
         """
-        if sys.version_info[0] >= 3:
-            open = functools.partial(builtins.open, encoding='utf-8')
         try:
-            with open(outfile, 'wt') as file:
+            if sys.version_info[0] >= 3:
+                file = open(outfile, 'wt', encoding='utf-8')
+            else:
+                file = open(outfile, 'wt')
+            with closing(file):
                 file.write(html)
         except (IOError, OSError), e:
             err_exit('Error writing %s: %s' % (outfile, e.strerror or e))
@@ -322,8 +323,6 @@ class Defaults(object):
     def write_default_config(self, filename):
         """Write the default config file.
         """
-        if sys.version_info[0] >= 3:
-            open = functools.partial(builtins.open, encoding='utf-8')
         try:
             with open(filename, 'wt') as file:
                 file.write(DEFAULT_CONFIG)
