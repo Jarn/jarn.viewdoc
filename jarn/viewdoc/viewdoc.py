@@ -18,6 +18,9 @@ from os.path import split, join, isdir, isfile
 from subprocess import Popen, PIPE
 from docutils.core import publish_string
 
+if sys.version_info[0] >= 3:
+    import builtins
+
 VERSION = "jarn.viewdoc %s" % __version__
 USAGE = "Try 'viewdoc --help' for more information"
 
@@ -205,7 +208,7 @@ class Docutils(object):
         """Read a reST file into a string.
         """
         if sys.version_info[0] >= 3:
-            open = functools.partial(open, encoding='utf-8')
+            open = functools.partial(builtins.open, encoding='utf-8')
         try:
             with open(infile, 'rt') as file:
                 return file.read()
@@ -218,7 +221,7 @@ class Docutils(object):
         """Write an HTML string to a file.
         """
         if sys.version_info[0] >= 3:
-            open = functools.partial(open, encoding='utf-8')
+            open = functools.partial(builtins.open, encoding='utf-8')
         try:
             with open(outfile, 'wt') as file:
                 file.write(html)
@@ -320,7 +323,7 @@ class Defaults(object):
         """Write the default config file.
         """
         if sys.version_info[0] >= 3:
-            open = functools.partial(open, encoding='utf-8')
+            open = functools.partial(builtins.open, encoding='utf-8')
         try:
             with open(filename, 'wt') as file:
                 file.write(DEFAULT_CONFIG)
