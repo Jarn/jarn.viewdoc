@@ -193,7 +193,7 @@ class Setuptools(object):
             err_exit('Bad setup.py')
         if sys.version_info[0] >= 3:
             try:
-                return long_description.decode('utf-8', 'strict')
+                return long_description.decode('utf-8')
             except UnicodeDecodeError, e:
                 err_exit('Error decoding long description: %s' % (e,))
         return long_description
@@ -234,7 +234,7 @@ class Docutils(object):
             err_exit('HTML conversion failed with error: %s' % e.code)
         else:
             if sys.version_info[0] >= 3:
-                return html.decode('utf-8', 'strict')
+                return html.decode('utf-8')
             return html
 
     def strip_xml_header(self, html):
