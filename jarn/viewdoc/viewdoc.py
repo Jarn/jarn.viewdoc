@@ -11,6 +11,7 @@ import os
 import getopt
 import webbrowser
 import ConfigParser
+import functools
 
 from os.path import abspath, expanduser, dirname, basename
 from os.path import split, join, isdir, isfile
@@ -93,6 +94,10 @@ small =
     a.reference { border-bottom: 1px dashed #cccccc; }
     </style>
 """
+
+if sys.version_info[0] >= 3:
+    # Open files in UTF-8
+    open = functools.partial(open, encoding='utf-8')
 
 
 def msg_exit(msg, rc=0):
@@ -205,11 +210,7 @@ class Docutils(object):
         """Read a reST file into a string.
         """
         try:
-            if sys.version_info[0] >= 3:
-                file = open(infile, 'rt', encoding='utf-8')
-            else:
-                file = open(infile, 'rt')
-            with closing(file):
+            with open(infile, 'rt') as file:
                 return file.read()
         except UnicodeDecodeError, e:
             err_exit('Error decoding %s: %s' % (infile, e))
@@ -220,11 +221,7 @@ class Docutils(object):
         """Write an HTML string to a file.
         """
         try:
-            if sys.version_info[0] >= 3:
-                file = open(outfile, 'wt', encoding='utf-8')
-            else:
-                file = open(outfile, 'wt')
-            with closing(file):
+            with open(outfile, 'wt') as file:
                 file.write(html)
         except (IOError, OSError), e:
             err_exit('Error writing %s: %s' % (outfile, e.strerror or e))
