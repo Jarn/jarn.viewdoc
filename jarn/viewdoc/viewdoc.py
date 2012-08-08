@@ -24,7 +24,7 @@ USAGE = "Try 'viewdoc --help' for more information"
 HELP = """\
 Usage: viewdoc [options] [rst-file|egg-dir]
 
-Documentation viewer
+Python documentation viewer
 
 Options:
   -s style, --style=style, or --style
