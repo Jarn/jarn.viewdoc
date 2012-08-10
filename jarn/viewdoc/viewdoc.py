@@ -200,8 +200,9 @@ class Setuptools(object):
             try:
                 return long_description.decode('utf-8')
             except UnicodeDecodeError, e:
-                err_exit('Error decoding long description: %s' % (e,))
-        return long_description
+                err_exit('Error reading long description: %s' % (e,))
+        else:
+            return long_description
 
 
 class Docutils(object):
@@ -213,7 +214,7 @@ class Docutils(object):
             with open(infile, 'rt') as file:
                 return file.read()
         except UnicodeDecodeError, e:
-            err_exit('Error decoding %s: %s' % (infile, e))
+            err_exit('Error reading %s: %s' % (infile, e))
         except (IOError, OSError), e:
             err_exit('Error reading %s: %s' % (infile, e.strerror or e))
 
