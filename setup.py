@@ -25,6 +25,7 @@ setup(name='jarn.viewdoc',
       namespace_packages=['jarn'],
       include_package_data=True,
       zip_safe=False,
+      test_suite='jarn.viewdoc.tests',
       install_requires=[
           'setuptools',
           'docutils',
