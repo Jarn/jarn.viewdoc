@@ -201,8 +201,7 @@ class Setuptools(object):
                 return long_description.decode('utf-8')
             except UnicodeDecodeError, e:
                 err_exit('Error reading long description: %s' % (e,))
-        else:
-            return long_description
+        return long_description
 
 
 class Docutils(object):
