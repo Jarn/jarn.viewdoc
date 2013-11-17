@@ -11,10 +11,12 @@ import os
 import getopt
 import webbrowser
 import ConfigParser
+import functools
 
 from os.path import abspath, expanduser, dirname, basename
 from os.path import split, join, isdir, isfile
 from subprocess import Popen, PIPE
+from contextlib import closing
 from docutils.core import publish_string
 
 VERSION = "jarn.viewdoc %s" % __version__
@@ -23,7 +25,7 @@ USAGE = "Try 'viewdoc --help' for more information"
 HELP = """\
 Usage: viewdoc [options] [rst-file|egg-dir]
 
-Documentation viewer
+Python documentation viewer
 
 Options:
   -s style, --style=style, or --style
@@ -93,6 +95,10 @@ small =
     </style>
 """
 
+if sys.version_info[0] >= 3:
+    # Open files in UTF-8
+    open = functools.partial(open, encoding='utf-8')
+
 
 def msg_exit(msg, rc=0):
     """Print msg to stdout and exit with rc.
@@ -138,12 +144,11 @@ class Python(object):
         return self.python
 
     def is_valid_python(self):
-        return (self.version_info[:2] >= (2, 5) and
-                self.version_info[:2] < (3, 0))
+        return (self.version_info[:2] >= (2, 5))
 
     def check_valid_python(self):
         if not self.is_valid_python():
-            err_exit('Python 2.5, 2.6, or 2.7 required')
+            err_exit('Python >= 2.5 required')
 
 
 class Process(object):
@@ -191,6 +196,11 @@ class Setuptools(object):
             '"%s" setup.py --long-description' % self.python)
         if rc != 0:
             err_exit('Bad setup.py')
+        if sys.version_info[0] >= 3:
+            try:
+                return long_description.decode('utf-8')
+            except UnicodeDecodeError, e:
+                err_exit('Error reading long description: %s' % (e,))
         return long_description
 
 
@@ -202,8 +212,10 @@ class Docutils(object):
         try:
             with open(infile, 'rt') as file:
                 return file.read()
+        except UnicodeDecodeError, e:
+            err_exit('Error reading %s: %s' % (infile, e))
         except (IOError, OSError), e:
-            err_exit('%s: %s' % (e.strerror or e, infile))
+            err_exit('Error reading %s: %s' % (infile, e.strerror or e))
 
     def write_file(self, html, outfile):
         """Write an HTML string to a file.
@@ -212,28 +224,40 @@ class Docutils(object):
             with open(outfile, 'wt') as file:
                 file.write(html)
         except (IOError, OSError), e:
-            err_exit('%s: %s' % (e.strerror or e, outfile))
+            err_exit('Error writing %s: %s' % (outfile, e.strerror or e))
 
     def convert_string(self, rest):
         """Convert a reST string to an HTML string.
         """
         try:
-            return publish_string(rest, writer_name='html')
+            html = publish_string(rest, writer_name='html')
         except SystemExit, e:
             err_exit('HTML conversion failed with error: %s' % e.code)
+        else:
+            if sys.version_info[0] >= 3:
+                return html.decode('utf-8')
+            return html
+
+    def strip_xml_header(self, html):
+        """Strip any <?xml version="1.0" encoding="utf-8" ?> header.
+        """
+        if html.startswith('<?xml '):
+            return html.split('\n', 1)[1]
+        return html
 
     def apply_styles(self, html, styles):
         """Insert style information into the HTML string.
         """
         index = html.find('</head>')
-        if index < 0:
-            return html
-        return ''.join((html[:index], styles, html[index:]))
+        if index >= 0:
+            return ''.join((html[:index], styles, html[index:]))
+        return html
 
     def publish_string(self, rest, outfile, styles=''):
         """Render a reST string as HTML.
         """
         html = self.convert_string(rest)
+        html = self.strip_xml_header(html)
         html = self.apply_styles(html, styles)
         self.write_file(html, outfile)
         return outfile
@@ -243,6 +267,18 @@ class Docutils(object):
         """
         rest = self.read_file(infile)
         return self.publish_string(rest, outfile, styles)
+
+
+class errors2warnings(object):
+    """Turn ConfigParser.Errors into warnings."""
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, type, value, tb):
+        if isinstance(value, ConfigParser.Error):
+            warn(str(value))
+            return True
 
 
 class Defaults(object):
@@ -255,23 +291,30 @@ class Defaults(object):
             self.write_default_config(filename)
 
         parser = ConfigParser.ConfigParser()
-        try:
+        with errors2warnings():
             parser.read(filename)
-        except ConfigParser.Error, e:
-            warn(str(e))
 
         def get(section, key, default=None):
             if parser.has_option(section, key):
-                return parser.get(section, key)
+                with errors2warnings():
+                    return parser.get(section, key, raw=True)
+            return default
+
+        def getitems(section, default=None):
+            if parser.has_section(section):
+                with errors2warnings():
+                    return parser.items(section, raw=True)
             return default
 
         self.known_styles = {}
-        if parser.has_section('styles'):
-            for key, value in parser.items('styles'):
-                self.known_styles[key] = value.strip()+'\n'
-
+        for key, value in getitems('styles', []):
+            self.known_styles[key] = value.strip()+'\n'
         self.known_styles.setdefault('pypi', PYPI)
+
         self.default_style = get('viewdoc', 'style', 'pypi').strip()
+        if self.default_style not in self.known_styles:
+            self.default_style = 'pypi'
+
         self.styles = self.known_styles.get(self.default_style, '')
 
     def write_default_config(self, filename):
@@ -281,7 +324,7 @@ class Defaults(object):
             with open(filename, 'wt') as file:
                 file.write(DEFAULT_CONFIG)
         except (IOError, OSError), e:
-            print >>sys.stderr, '%s: %s' % (e.strerror or e, filename)
+            print >>sys.stderr, 'Error writing %s: %s' % (filename, e.strerror or e)
 
 
 class DocumentationViewer(object):
