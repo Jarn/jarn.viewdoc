@@ -12,7 +12,7 @@ uploading it to PyPI.
 
 Also see `jarn.mkrelease`_.
 
-.. _`jarn.mkrelease`: http://pypi.python.org/pypi/jarn.mkrelease
+.. _`jarn.mkrelease`: https://pypi.python.org/pypi/jarn.mkrelease
 
 Installation
 ============
