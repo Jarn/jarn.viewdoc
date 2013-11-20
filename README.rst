@@ -17,9 +17,11 @@ Also see `jarn.mkrelease`_.
 Installation
 ============
 
-viewdoc requires Python 2.5 or higher. Use ``easy_install jarn.viewdoc`` to
-install the ``viewdoc`` script. Then put it on your system PATH by e.g.
-symlinking it to ``/usr/local/bin``.
+viewdoc works with Python 2.5 - 3.3 and all released versions of setuptools
+and distribute.
+
+Use ``easy_install jarn.viewdoc`` to install the ``viewdoc`` script.
+Then put it on your system PATH by e.g. symlinking it to ``/usr/local/bin``.
 
 **Upgrade Note:** If you have jarn.viewdoc < 1.3 installed, move away
 your existing ``~/.viewdoc`` file to get the updated styles.
