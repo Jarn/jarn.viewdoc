@@ -370,7 +370,10 @@ class DocumentationViewer(object):
     def list_styles(self):
         """Print available styles and exit.
         """
-        for style in sorted(self.defaults.known_styles):
+        known = sorted(self.defaults.known_styles)
+        if not known:
+            err_exit('No styles', 0)
+        for style in known:
             if style == self.defaults.default_style:
                 print style, '(default)'
             else:
