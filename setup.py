@@ -33,5 +33,4 @@ setup(name='jarn.viewdoc',
       entry_points={
           'console_scripts': 'viewdoc=jarn.viewdoc.viewdoc:main',
       },
-      use_2to3=True,
 )
