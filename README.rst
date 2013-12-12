@@ -17,7 +17,7 @@ Also see `jarn.mkrelease`_.
 Installation
 ============
 
-viewdoc works with Python 2.5 - 3.4 and all released versions of setuptools
+viewdoc works with Python 2.6 - 3.4 and all released versions of setuptools
 and distribute.
 
 Use ``easy_install jarn.viewdoc`` to install the ``viewdoc`` script.
