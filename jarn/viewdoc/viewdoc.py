@@ -49,7 +49,7 @@ body { margin-left: 10em; margin-right: 10em; }
 """
 
 PYPI = """\
-<link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
+<link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
 <style type="text/css">
 body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
 a:link { text-decoration: none; color: #0000aa; }
@@ -59,7 +59,7 @@ a.reference { border-bottom: 1px dashed #cccccc; }
 """
 
 SMALL = """\
-<link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
+<link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
 <style type="text/css">
 body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
 a:link { text-decoration: none; color: #0000aa; }
@@ -78,7 +78,7 @@ plain =
     body { margin-left: 10em; margin-right: 10em; }
     </style>
 pypi =
-    <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
+    <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
     <style type="text/css">
     body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
     a:link { text-decoration: none; color: #0000aa; }
@@ -86,7 +86,7 @@ pypi =
     a.reference { border-bottom: 1px dashed #cccccc; }
     </style>
 small =
-    <link rel="stylesheet" href="http://www.python.org/styles/styles.css" type="text/css" />
+    <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
     <style type="text/css">
     body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
     a:link { text-decoration: none; color: #0000aa; }
