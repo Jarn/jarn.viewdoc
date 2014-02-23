@@ -11,10 +11,10 @@ import os
 import getopt
 import webbrowser
 import ConfigParser
-import functools
 
 from os.path import abspath, expanduser, dirname, basename
 from os.path import split, join, isdir, isfile
+from functools import partial
 from subprocess import Popen, PIPE
 from contextlib import closing
 from docutils.core import publish_string
@@ -95,9 +95,9 @@ small =
     </style>
 """
 
+# Open files as UTF-8
 if sys.version_info[0] >= 3:
-    # Open files in UTF-8
-    open = functools.partial(open, encoding='utf-8')
+    open = partial(open, encoding='utf-8')
 
 
 def msg_exit(msg, rc=0):
