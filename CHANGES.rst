@@ -4,6 +4,8 @@ Changelog
 1.7 - Unreleased
 ----------------
 
+- Update PyPI stylesheet links in the face of new python.org.
+  [stefan]
 
 1.6 - 2013-11-21
 ----------------
