@@ -7,6 +7,9 @@ Changelog
 - Update PyPI stylesheet links in the face of new python.org.
   [stefan]
 
+- Add new ``pypi`` style and rename previous one to ``classic``.
+  [stefan]
+
 1.6 - 2013-11-21
 ----------------
 

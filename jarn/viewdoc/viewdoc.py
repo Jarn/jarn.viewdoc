@@ -48,7 +48,7 @@ body { margin-left: 10em; margin-right: 10em; }
 </style>
 """
 
-PYPI = """\
+CLASSIC = """\
 <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
 <style type="text/css">
 body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
@@ -68,6 +68,20 @@ a.reference { border-bottom: 1px dashed #cccccc; }
 </style>
 """
 
+PYPI = """\
+<link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
+<link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/docutils.css" type="text/css" />
+<link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pygments.css" type="text/css" />
+<link rel="stylesheet" href="http://pypi.python.org/static/css/pypi.css" type="text/css" />
+<link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
+<style type="text/css">
+body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
+a:link { text-decoration: none; color: #0000aa; }
+a:visited { text-decoration: none; color: #551a8b; }
+a.reference { border-bottom: 1px dashed #cccccc; }
+</style>
+"""
+
 DEFAULT_CONFIG = """\
 [viewdoc]
 style = pypi
@@ -77,7 +91,7 @@ plain =
     <style type="text/css">
     body { margin-left: 10em; margin-right: 10em; }
     </style>
-pypi =
+classic =
     <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
     <style type="text/css">
     body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
@@ -87,6 +101,18 @@ pypi =
     </style>
 small =
     <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
+    <style type="text/css">
+    body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
+    a:link { text-decoration: none; color: #0000aa; }
+    a:visited { text-decoration: none; color: #551a8b; }
+    a.reference { border-bottom: 1px dashed #cccccc; }
+    </style>
+pypi =
+    <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
+    <link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/docutils.css" type="text/css" />
+    <link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://pypi.python.org/static/css/pypi.css" type="text/css" />
+    <link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
     <style type="text/css">
     body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
     a:link { text-decoration: none; color: #0000aa; }
