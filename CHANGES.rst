@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.7 - Unreleased
+1.7 - 2014-03-22
 ----------------
 
 - Update PyPI stylesheet links in the face of new python.org.
