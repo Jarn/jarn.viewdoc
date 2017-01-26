@@ -1,4 +1,4 @@
-from __future__ import with_statement
+from __future__ import print_function
 
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -10,7 +10,6 @@ import sys
 import os
 import getopt
 import webbrowser
-import ConfigParser
 
 from os.path import abspath, expanduser, dirname, basename
 from os.path import split, join, isdir, isfile
@@ -18,6 +17,16 @@ from functools import partial
 from subprocess import Popen, PIPE
 from contextlib import closing
 from docutils.core import publish_string
+
+if sys.version_info[:2] >= (3, 2):
+    from configparser import Error
+    from configparser import ConfigParser
+elif sys.version_info[0] >= 3:
+    from configparser import Error
+    from configparser import SafeConfigParser as ConfigParser
+else:
+    from ConfigParser import Error
+    from ConfigParser import SafeConfigParser as ConfigParser
 
 VERSION = "jarn.viewdoc %s" % __version__
 USAGE = "Try 'viewdoc --help' for more information"
@@ -129,21 +138,21 @@ if sys.version_info[0] >= 3:
 def msg_exit(msg, rc=0):
     """Print msg to stdout and exit with rc.
     """
-    print msg
+    print(msg)
     sys.exit(rc)
 
 
 def err_exit(msg, rc=1):
     """Print msg to stderr and exit with rc.
     """
-    print >>sys.stderr, msg
+    print(msg, file=sys.stderr)
     sys.exit(rc)
 
 
 def warn(msg):
     """Print warning msg to stderr.
     """
-    print >>sys.stderr, 'WARNING:', msg
+    print('WARNING:', msg, file=sys.stderr)
 
 
 class changedir(object):
@@ -174,7 +183,7 @@ class Python(object):
 
     def check_valid_python(self):
         if not self.is_valid_python():
-            err_exit('Python >= 2.5 required')
+            err_exit('Python >= 2.6 required')
 
 
 class Process(object):
@@ -225,7 +234,7 @@ class Setuptools(object):
         if sys.version_info[0] >= 3:
             try:
                 return long_description.decode('utf-8')
-            except UnicodeDecodeError, e:
+            except UnicodeDecodeError as e:
                 err_exit('Error reading long description: %s' % (e,))
         return long_description
 
@@ -238,9 +247,9 @@ class Docutils(object):
         try:
             with open(infile, 'rt') as file:
                 return file.read()
-        except UnicodeDecodeError, e:
+        except UnicodeDecodeError as e:
             err_exit('Error reading %s: %s' % (infile, e))
-        except (IOError, OSError), e:
+        except (IOError, OSError) as e:
             err_exit('Error reading %s: %s' % (infile, e.strerror or e))
 
     def write_file(self, html, outfile):
@@ -249,7 +258,7 @@ class Docutils(object):
         try:
             with open(outfile, 'wt') as file:
                 file.write(html)
-        except (IOError, OSError), e:
+        except (IOError, OSError) as e:
             err_exit('Error writing %s: %s' % (outfile, e.strerror or e))
 
     def convert_string(self, rest):
@@ -257,7 +266,7 @@ class Docutils(object):
         """
         try:
             html = publish_string(rest, writer_name='html')
-        except SystemExit, e:
+        except SystemExit as e:
             err_exit('HTML conversion failed with error: %s' % e.code)
         else:
             if sys.version_info[0] >= 3:
@@ -302,7 +311,7 @@ class errors2warnings(object):
         pass
 
     def __exit__(self, type, value, tb):
-        if isinstance(value, ConfigParser.Error):
+        if isinstance(value, Error):
             warn(str(value))
             return True
 
@@ -316,7 +325,7 @@ class Defaults(object):
         if not isfile(filename):
             self.write_default_config(filename)
 
-        parser = ConfigParser.ConfigParser()
+        parser = ConfigParser()
         with errors2warnings():
             parser.read(filename)
 
@@ -349,8 +358,8 @@ class Defaults(object):
         try:
             with open(filename, 'wt') as file:
                 file.write(DEFAULT_CONFIG)
-        except (IOError, OSError), e:
-            print >>sys.stderr, 'Error writing %s: %s' % (filename, e.strerror or e)
+        except (IOError, OSError) as e:
+            print('Error writing %s: %s' % (filename, e.strerror or e), file=sys.stderr)
 
 
 class DocumentationViewer(object):
@@ -374,7 +383,7 @@ class DocumentationViewer(object):
         try:
             options, args = getopt.gnu_getopt(args, 'hls:v',
                 ('help', 'style=', 'version', 'list-styles') + style_names)
-        except getopt.GetoptError, e:
+        except getopt.GetoptError as e:
             err_exit('viewdoc: %s\n%s' % (e.msg, USAGE))
 
         for name, value in options:
@@ -401,9 +410,9 @@ class DocumentationViewer(object):
             err_exit('No styles', 0)
         for style in known:
             if style == self.defaults.default_style:
-                print style, '(default)'
+                print(style, '(default)')
             else:
-                print style
+                print(style)
         sys.exit(0)
 
     def render_file(self, filename):
@@ -454,7 +463,7 @@ def main(args=None):
         args = sys.argv[1:]
     try:
         DocumentationViewer(args).run()
-    except SystemExit, e:
+    except SystemExit as e:
         return e.code
     return 0
 
