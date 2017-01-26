@@ -7,20 +7,17 @@ Python documentation viewer
 
 **viewdoc** is a Python package documentation viewer. It converts
 reST-formatted text to HTML and displays it in a browser window.
-It is typically used to check a package's long description before
+
+viewdoc is typically used to check a package's long description before
 uploading it to PyPI.
-
-Also see `jarn.mkrelease`_.
-
-.. _`jarn.mkrelease`: https://pypi.python.org/pypi/jarn.mkrelease
 
 Installation
 ============
 
-viewdoc works with Python 2.6 - 3.4 and all released versions of setuptools
+viewdoc works with Python 2.6 - 3.6 and all released versions of setuptools
 and distribute.
 
-Use ``easy_install jarn.viewdoc`` to install the ``viewdoc`` script.
+Use ``pip install jarn.viewdoc`` to install the ``viewdoc`` script.
 Then put it on your system PATH by e.g. symlinking it to ``/usr/local/bin``.
 
 **Upgrade Note:** If you have jarn.viewdoc < 1.7 installed, move away
@@ -29,7 +26,7 @@ your existing ``~/.viewdoc`` file to get the updated styles.
 Usage
 =====
 
-``viewdoc [options] [rst-file|egg-dir]``
+``viewdoc [options] [rst-file | egg-dir]``
 
 Options
 =======
