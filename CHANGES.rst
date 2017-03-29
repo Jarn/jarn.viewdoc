@@ -4,6 +4,8 @@ Changelog
 1.9 - Unreleased
 ----------------
 
+- Protect against bad or incomplete locale settings.
+  [stefan]
 
 1.8 - 2017-01-30
 ----------------
