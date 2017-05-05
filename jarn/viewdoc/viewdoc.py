@@ -91,11 +91,13 @@ body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
 a:link { text-decoration: none; color: #0000aa; }
 a:visited { text-decoration: none; color: #551a8b; }
 a.reference { border-bottom: 1px dashed #cccccc; }
+pre.literal-block { background-color: #f0f0f0; }
 </style>
 """
 
 DEFAULT_CONFIG = """\
 [viewdoc]
+version = 1.9
 style = pypi
 
 [styles]
@@ -130,6 +132,7 @@ pypi =
     a:link { text-decoration: none; color: #0000aa; }
     a:visited { text-decoration: none; color: #551a8b; }
     a.reference { border-bottom: 1px dashed #cccccc; }
+    pre.literal-block { background-color: #f0f0f0; }
     </style>
 """
 
