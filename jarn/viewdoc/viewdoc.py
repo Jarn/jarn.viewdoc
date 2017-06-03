@@ -14,11 +14,9 @@ import os
 import getopt
 import webbrowser
 
-from os.path import abspath, expanduser, dirname, basename
-from os.path import split, join, isdir, isfile
+from os.path import abspath, expanduser, split, isdir, isfile
 from functools import partial
 from subprocess import Popen, PIPE
-from contextlib import closing
 from docutils.core import publish_string
 
 if sys.version_info[:2] >= (3, 2):
