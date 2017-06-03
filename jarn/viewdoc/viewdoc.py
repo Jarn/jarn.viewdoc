@@ -56,14 +56,14 @@ Options:
 
 PLAIN = """\
 <style type="text/css">
-body { margin-left: 10em; margin-right: 10em; }
+body { margin-left: 20%; margin-right: 20%; }
 </style>
 """
 
 CLASSIC = """\
 <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
 <style type="text/css">
-body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
+body { margin-left: 20%; margin-right: 20%; font-size: 95%; }
 a:link { text-decoration: none; color: #0000aa; }
 a:visited { text-decoration: none; color: #551a8b; }
 a.reference { border-bottom: 1px dashed #cccccc; }
@@ -73,7 +73,7 @@ a.reference { border-bottom: 1px dashed #cccccc; }
 SMALL = """\
 <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
 <style type="text/css">
-body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
+body { margin-left: 20%; margin-right: 20%; font-size: 90%; }
 a:link { text-decoration: none; color: #0000aa; }
 a:visited { text-decoration: none; color: #551a8b; }
 a.reference { border-bottom: 1px dashed #cccccc; }
@@ -87,7 +87,7 @@ PYPI = """\
 <link rel="stylesheet" href="http://pypi.python.org/static/css/pypi.css" type="text/css" />
 <link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
 <style type="text/css">
-body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
+body { margin-left: 20%; margin-right: 20%; font-size: 90%; }
 a:link { text-decoration: none; color: #0000aa; }
 a:visited { text-decoration: none; color: #551a8b; }
 a.reference { border-bottom: 1px dashed #cccccc; }
@@ -103,12 +103,12 @@ style = pypi
 [styles]
 plain =
     <style type="text/css">
-    body { margin-left: 10em; margin-right: 10em; }
+    body { margin-left: 20%; margin-right: 20%; }
     </style>
 classic =
     <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
     <style type="text/css">
-    body { margin-left: 10em; margin-right: 10em; font-size: 95%; }
+    body { margin-left: 20%; margin-right: 20%; font-size: 95%; }
     a:link { text-decoration: none; color: #0000aa; }
     a:visited { text-decoration: none; color: #551a8b; }
     a.reference { border-bottom: 1px dashed #cccccc; }
@@ -116,7 +116,7 @@ classic =
 small =
     <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
     <style type="text/css">
-    body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
+    body { margin-left: 20%; margin-right: 20%; font-size: 90%; }
     a:link { text-decoration: none; color: #0000aa; }
     a:visited { text-decoration: none; color: #551a8b; }
     a.reference { border-bottom: 1px dashed #cccccc; }
@@ -128,7 +128,7 @@ pypi =
     <link rel="stylesheet" href="http://pypi.python.org/static/css/pypi.css" type="text/css" />
     <link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
     <style type="text/css">
-    body { margin-left: 10em; margin-right: 10em; font-size: 90%; }
+    body { margin-left: 20%; margin-right: 20%; font-size: 90%; }
     a:link { text-decoration: none; color: #0000aa; }
     a:visited { text-decoration: none; color: #551a8b; }
     a.reference { border-bottom: 1px dashed #cccccc; }
