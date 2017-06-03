@@ -12,6 +12,7 @@ __version__ = pkg_resources.get_distribution('jarn.viewdoc').version
 import sys
 import os
 import getopt
+import shutil
 import webbrowser
 
 from os.path import abspath, expanduser, split, isdir, isfile
@@ -345,6 +346,15 @@ class Defaults(object):
                     return parser.items(section, raw=True)
             return default
 
+        self.version = get('viewdoc', 'version', '1.8').strip()
+        # In-place config upgrade
+        if self.version == '1.8':
+            if self.backup_config(filename):
+                self.write_default_config(filename)
+                with errors2warnings():
+                    parser.read(filename)
+                self.version = get('viewdoc', 'version', '').strip()
+
         self.known_styles = {}
         for key, value in getitems('styles', []):
             self.known_styles[key] = value.strip()+'\n'
@@ -356,14 +366,28 @@ class Defaults(object):
 
         self.styles = self.known_styles.get(self.default_style, '')
 
+    def backup_config(self, filename):
+        """Backup the current config file.
+        """
+        backup_name = filename + '.' + self.version
+        warn('Moving current configuration to ' + backup_name)
+        try:
+            shutil.copy2(filename, backup_name)
+            return True
+        except (IOError, OSError) as e:
+            print('Error copying %s: %s' % (filename, e.strerror or e), file=sys.stderr)
+            return False
+
     def write_default_config(self, filename):
         """Write the default config file.
         """
         try:
             with open(filename, 'wt') as file:
                 file.write(DEFAULT_CONFIG)
+            return True
         except (IOError, OSError) as e:
             print('Error writing %s: %s' % (filename, e.strerror or e), file=sys.stderr)
+            return False
 
 
 class DocumentationViewer(object):
