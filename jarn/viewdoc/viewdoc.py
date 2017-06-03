@@ -173,6 +173,18 @@ class changedir(object):
         os.chdir(self.old)
 
 
+class errors2warnings(object):
+    """Turn ConfigParser.Errors into warnings."""
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, type, value, tb):
+        if isinstance(value, Error):
+            warn(str(value))
+            return True
+
+
 class Python(object):
 
     def __init__(self):
@@ -306,18 +318,6 @@ class Docutils(object):
         """
         rest = self.read_file(infile)
         return self.publish_string(rest, outfile, styles)
-
-
-class errors2warnings(object):
-    """Turn ConfigParser.Errors into warnings."""
-
-    def __enter__(self):
-        pass
-
-    def __exit__(self, type, value, tb):
-        if isinstance(value, Error):
-            warn(str(value))
-            return True
 
 
 class Defaults(object):
