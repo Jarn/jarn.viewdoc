@@ -369,7 +369,7 @@ class Defaults(object):
     def backup_config(self, filename):
         """Backup the current config file.
         """
-        backup_name = filename + '.' + self.version
+        backup_name = filename + '-' + self.version
         warn('Moving current configuration to ' + backup_name)
         try:
             shutil.copy2(filename, backup_name)
