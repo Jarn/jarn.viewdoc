@@ -347,13 +347,6 @@ class Defaults(object):
             return default
 
         self.version = get('viewdoc', 'version', '1.8').strip()
-        # In-place config upgrade
-        if self.version == '1.8':
-            if self.backup_config(filename):
-                self.write_default_config(filename)
-                with errors2warnings():
-                    parser.read(filename)
-                self.version = get('viewdoc', 'version', '').strip()
 
         self.known_styles = {}
         for key, value in getitems('styles', []):
@@ -366,11 +359,23 @@ class Defaults(object):
 
         self.styles = self.known_styles.get(self.default_style, '')
 
+    def upgrade(self):
+        """Upgrade the config file.
+        """
+        filename = expanduser('~/.viewdoc')
+        if self.version == '1.8':
+            if self.backup_config(filename):
+                return self.write_default_config(filename)
+        elif self.version == '1.9':
+            print('Already up to date')
+            return True
+        return False
+
     def backup_config(self, filename):
         """Backup the current config file.
         """
         backup_name = filename + '-' + self.version
-        warn('Moving current configuration to ' + backup_name)
+        print('Moving current configuration to ' + backup_name)
         try:
             shutil.copy2(filename, backup_name)
             return True
@@ -410,7 +415,7 @@ class DocumentationViewer(object):
 
         try:
             options, args = getopt.gnu_getopt(args, 'hls:v',
-                ('help', 'style=', 'version', 'list-styles') + style_names)
+                ('help', 'style=', 'version', 'list-styles', 'upgrade') + style_names)
         except getopt.GetoptError as e:
             err_exit('viewdoc: %s\n%s' % (e.msg, USAGE))
 
@@ -425,6 +430,8 @@ class DocumentationViewer(object):
                 msg_exit(HELP)
             elif name in ('-v', '--version'):
                 msg_exit(VERSION)
+            elif name in ('--upgrade',):
+                sys.exit(not self.defaults.upgrade())
 
         if len(args) > 1:
             err_exit('viewdoc: too many arguments\n%s' % USAGE)
