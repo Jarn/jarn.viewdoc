@@ -18,9 +18,8 @@ viewdoc works with Python 2.6 - 3.6 and all released versions of setuptools
 and distribute.
 
 Use ``pip install jarn.viewdoc`` to install the ``viewdoc`` script.
-Then put it on your system PATH by e.g. symlinking it to ``/usr/local/bin``.
 
-**Upgrade Note:** If you have jarn.viewdoc < 1.7 installed, move away
+**Upgrade Note:** If you have jarn.viewdoc < 1.9 installed, move away
 your existing ``~/.viewdoc`` file to get the updated styles.
 
 Usage

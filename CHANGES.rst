@@ -4,6 +4,9 @@ Changelog
 1.9 - Unreleased
 ----------------
 
+- Update PyPI stylesheet (grey code blocks).
+  [stefan]
+
 - Protect against bad or incomplete locale settings.
   [stefan]
 
