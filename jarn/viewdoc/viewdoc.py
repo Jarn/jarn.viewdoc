@@ -48,8 +48,6 @@ Options:
   -h, --help          Print this help message and exit.
   -v, --version       Print the version string and exit.
 
-  --upgrade           Upgrade the configuration file.
-
   rst-file            reST file to view.
   egg-dir             Package whose long description to view. Defaults to
                       the current working directory.
@@ -369,7 +367,6 @@ class Defaults(object):
             if self.backup_config(filename):
                 return self.write_default_config(filename)
         elif self.version == '1.9':
-            print('Already up to date')
             return True
         return False
 
@@ -377,7 +374,7 @@ class Defaults(object):
         """Backup the current config file.
         """
         backup_name = filename + '-' + self.version
-        print('Moving current configuration to ' + backup_name)
+        warn('Moving current configuration to ' + backup_name)
         try:
             shutil.copy2(filename, backup_name)
             return True
@@ -400,6 +397,12 @@ class Defaults(object):
 class DocumentationViewer(object):
 
     def __init__(self, args):
+        """Initialize.
+        """
+        self.args = args
+        self.set_defaults()
+
+    def set_defaults(self):
         """Set defaults.
         """
         self.defaults = Defaults()
@@ -407,17 +410,23 @@ class DocumentationViewer(object):
         self.setuptools = Setuptools()
         self.docutils = Docutils()
         self.styles = self.defaults.styles
-        self.args = args
+        self.list = False
 
-    def parse_options(self, args):
+    def upgrade_defaults(self):
+        """Upgrade config file and reload.
+        """
+        self.defaults.upgrade()
+        self.set_defaults()
+
+    def parse_options(self, args, depth=0):
         """Parse command line options.
         """
         style_names = tuple(self.defaults.known_styles)
         style_opts = tuple('--'+x for x in style_names)
 
         try:
-            options, args = getopt.gnu_getopt(args, 'hls:v',
-                ('help', 'style=', 'version', 'list-styles', 'upgrade') + style_names)
+            options, remaining_args = getopt.gnu_getopt(args, 'hls:v',
+                ('help', 'style=', 'version', 'list-styles') + style_names)
         except getopt.GetoptError as e:
             err_exit('viewdoc: %s\n%s' % (e.msg, USAGE))
 
@@ -427,17 +436,23 @@ class DocumentationViewer(object):
             elif name in style_opts:
                 self.styles = self.defaults.known_styles.get(name[2:], '')
             elif name in ('-l', '--list-styles'):
-                self.list_styles()
+                self.list = True
             elif name in ('-h', '--help'):
                 msg_exit(HELP)
             elif name in ('-v', '--version'):
                 msg_exit(VERSION)
-            elif name in ('--upgrade',):
-                sys.exit(not self.defaults.upgrade())
 
-        if len(args) > 1:
+        if len(remaining_args) > 1:
             err_exit('viewdoc: too many arguments\n%s' % USAGE)
-        return args
+
+        if self.defaults.version == '1.8' and depth == 0:
+            self.upgrade_defaults()
+            return self.parse_options(args, depth+1)
+
+        if self.list:
+            self.list_styles()
+
+        return remaining_args
 
     def list_styles(self):
         """Print available styles and exit.
