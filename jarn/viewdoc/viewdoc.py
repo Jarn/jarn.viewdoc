@@ -48,6 +48,8 @@ Options:
   -h, --help          Print this help message and exit.
   -v, --version       Print the version string and exit.
 
+  --upgrade           Upgrade the configuration file.
+
   rst-file            reST file to view.
   egg-dir             Package whose long description to view. Defaults to
                       the current working directory.

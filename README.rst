@@ -19,8 +19,8 @@ and distribute.
 
 Use ``pip install jarn.viewdoc`` to install the ``viewdoc`` script.
 
-**Upgrade Note:** If you have jarn.viewdoc < 1.9 installed, move away
-your existing ``~/.viewdoc`` file to get the updated styles.
+**Upgrade Note:** If you have jarn.viewdoc < 1.9 installed,
+run ``viewdoc --upgrade`` to get the updated styles.
 
 Usage
 =====
@@ -42,6 +42,9 @@ Options
 
 ``-v, --version``
     Print the version string and exit.
+
+``--upgrade``
+    Upgrade the configuration file.
 
 ``rst-file``
     The reST file to view.
