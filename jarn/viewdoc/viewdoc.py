@@ -12,6 +12,7 @@ __version__ = pkg_resources.get_distribution('jarn.viewdoc').version
 import sys
 import os
 import getopt
+import shutil
 import webbrowser
 
 from os.path import abspath, expanduser, split, isdir, isfile
@@ -345,6 +346,8 @@ class Defaults(object):
                     return parser.items(section, raw=True)
             return default
 
+        self.version = get('viewdoc', 'version', '1.8').strip()
+
         self.known_styles = {}
         for key, value in getitems('styles', []):
             self.known_styles[key] = value.strip()+'\n'
@@ -356,19 +359,50 @@ class Defaults(object):
 
         self.styles = self.known_styles.get(self.default_style, '')
 
+    def upgrade(self):
+        """Upgrade the config file.
+        """
+        filename = expanduser('~/.viewdoc')
+        if self.version == '1.8':
+            if self.backup_config(filename):
+                return self.write_default_config(filename)
+        elif self.version == '1.9':
+            return True
+        return False
+
+    def backup_config(self, filename):
+        """Backup the current config file.
+        """
+        backup_name = filename + '-' + self.version
+        warn('Moving current configuration to ' + backup_name)
+        try:
+            shutil.copy2(filename, backup_name)
+            return True
+        except (IOError, OSError) as e:
+            print('Error copying %s: %s' % (filename, e.strerror or e), file=sys.stderr)
+            return False
+
     def write_default_config(self, filename):
         """Write the default config file.
         """
         try:
             with open(filename, 'wt') as file:
                 file.write(DEFAULT_CONFIG)
+            return True
         except (IOError, OSError) as e:
             print('Error writing %s: %s' % (filename, e.strerror or e), file=sys.stderr)
+            return False
 
 
 class DocumentationViewer(object):
 
     def __init__(self, args):
+        """Initialize.
+        """
+        self.args = args
+        self.set_defaults()
+
+    def set_defaults(self):
         """Set defaults.
         """
         self.defaults = Defaults()
@@ -376,16 +410,22 @@ class DocumentationViewer(object):
         self.setuptools = Setuptools()
         self.docutils = Docutils()
         self.styles = self.defaults.styles
-        self.args = args
+        self.list = False
 
-    def parse_options(self, args):
+    def upgrade_defaults(self):
+        """Upgrade config file and reload.
+        """
+        self.defaults.upgrade()
+        self.set_defaults()
+
+    def parse_options(self, args, depth=0):
         """Parse command line options.
         """
         style_names = tuple(self.defaults.known_styles)
         style_opts = tuple('--'+x for x in style_names)
 
         try:
-            options, args = getopt.gnu_getopt(args, 'hls:v',
+            options, remaining_args = getopt.gnu_getopt(args, 'hls:v',
                 ('help', 'style=', 'version', 'list-styles') + style_names)
         except getopt.GetoptError as e:
             err_exit('viewdoc: %s\n%s' % (e.msg, USAGE))
@@ -396,15 +436,23 @@ class DocumentationViewer(object):
             elif name in style_opts:
                 self.styles = self.defaults.known_styles.get(name[2:], '')
             elif name in ('-l', '--list-styles'):
-                self.list_styles()
+                self.list = True
             elif name in ('-h', '--help'):
                 msg_exit(HELP)
             elif name in ('-v', '--version'):
                 msg_exit(VERSION)
 
-        if len(args) > 1:
+        if len(remaining_args) > 1:
             err_exit('viewdoc: too many arguments\n%s' % USAGE)
-        return args
+
+        if self.defaults.version == '1.8' and depth == 0:
+            self.upgrade_defaults()
+            return self.parse_options(args, depth+1)
+
+        if self.list:
+            self.list_styles()
+
+        return remaining_args
 
     def list_styles(self):
         """Print available styles and exit.
