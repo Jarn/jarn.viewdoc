@@ -105,7 +105,7 @@ plain =
     body { margin-left: 20%; margin-right: 20%; }
     </style>
 classic =
-    <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
+    <link rel="stylesheet" href="https://pypi.python.org/static/styles/styles.css" type="text/css" />
     <style type="text/css">
     body { margin-left: 20%; margin-right: 20%; font-size: 95%; }
     a:link { text-decoration: none; color: #0000aa; }
@@ -113,7 +113,7 @@ classic =
     a.reference { border-bottom: 1px dashed #cccccc; }
     </style>
 small =
-    <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
+    <link rel="stylesheet" href="https://pypi.python.org/static/styles/styles.css" type="text/css" />
     <style type="text/css">
     body { margin-left: 20%; margin-right: 20%; font-size: 90%; }
     a:link { text-decoration: none; color: #0000aa; }
@@ -121,11 +121,11 @@ small =
     a.reference { border-bottom: 1px dashed #cccccc; }
     </style>
 pypi =
-    <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
-    <link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/docutils.css" type="text/css" />
-    <link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="http://pypi.python.org/static/css/pypi.css" type="text/css" />
-    <link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
+    <link rel="stylesheet" href="https://pypi.python.org/static/styles/styles.css" type="text/css" />
+    <link rel="stylesheet" media="screen" href="https://pypi.python.org/static/css/docutils.css" type="text/css" />
+    <link rel="stylesheet" media="screen" href="https://pypi.python.org/static/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="https://pypi.python.org/static/css/pypi.css" type="text/css" />
+    <link rel="stylesheet" media="screen" href="https://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
     <style type="text/css">
     body { margin-left: 20%; margin-right: 20%; font-size: 90%; }
     a:link { text-decoration: none; color: #0000aa; }
