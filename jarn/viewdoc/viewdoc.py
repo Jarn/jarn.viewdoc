@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from __future__ import print_function
 
 import locale
@@ -20,15 +21,7 @@ from functools import partial
 from subprocess import Popen, PIPE
 from docutils.core import publish_string
 
-if sys.version_info[:2] >= (3, 2):
-    from configparser import Error
-    from configparser import ConfigParser
-elif sys.version_info[0] >= 3:
-    from configparser import Error
-    from configparser import SafeConfigParser as ConfigParser
-else:
-    from ConfigParser import Error
-    from ConfigParser import SafeConfigParser as ConfigParser
+from .configparser import ConfigParser
 
 VERSION = "jarn.viewdoc %s" % __version__
 USAGE = "Try 'viewdoc --help' for more information"
@@ -175,18 +168,6 @@ class changedir(object):
         os.chdir(self.old)
 
 
-class errors2warnings(object):
-    """Turn ConfigParser.Errors into warnings."""
-
-    def __enter__(self):
-        pass
-
-    def __exit__(self, type, value, tb):
-        if isinstance(value, Error):
-            warn(str(value))
-            return True
-
-
 class Python(object):
 
     def __init__(self):
@@ -331,30 +312,17 @@ class Defaults(object):
         if not isfile(filename):
             self.write_default_config(filename)
 
-        parser = ConfigParser()
-        with errors2warnings():
-            parser.read(filename)
+        parser = ConfigParser(warn)
+        parser.read(filename)
 
-        def get(section, key, default=None):
-            if parser.has_option(section, key):
-                with errors2warnings():
-                    return parser.get(section, key, raw=True)
-            return default
-
-        def getitems(section, default=None):
-            if parser.has_section(section):
-                with errors2warnings():
-                    return parser.items(section, raw=True)
-            return default
-
-        self.version = get('viewdoc', 'version', '').strip() or '1.8'
-        self.browser = get('viewdoc', 'browser', '').strip() or 'default'
+        self.version = parser.getstring('viewdoc', 'version', '') or '1.8'
+        self.browser = parser.getstring('viewdoc', 'browser', '') or 'default'
 
         self.known_styles = {}
-        for key, value in getitems('styles', []):
+        for key, value in parser.items('styles', []):
             self.known_styles[key] = value.strip()+'\n'
 
-        self.default_style = get('viewdoc', 'style', '').strip()
+        self.default_style = parser.getstring('viewdoc', 'style', '')
         self.styles = self.known_styles.get(self.default_style, '')
 
     def upgrade(self):
