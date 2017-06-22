@@ -41,9 +41,6 @@ Python documentation viewer
 Options:
   -s style, --style=style, or --style
                       Select the custom style added to the HTML output.
-                      Used to override the configuration file setting of
-                      the same name.
-
   -b browser, --browser=browser
                       Select the browser used for display.
 

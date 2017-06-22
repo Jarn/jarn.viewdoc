@@ -28,11 +28,10 @@ Options
 =======
 
 ``-s style, --style=style, or --style``
-    Select the custom style added to the HTML output. Used to override the
-    configuration file setting of the same name.
+    Select the custom style added to the HTML output.
 
 ``-b browser, --browser=browser``
-    Specify the browser used for display. For a list of names see the
+    Select the browser used for display. For a list of names see the
     `webbrowser`_ module.
 
 ``-l, --list-styles``
