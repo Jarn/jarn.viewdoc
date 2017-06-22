@@ -44,6 +44,9 @@ Options:
                       Used to override the configuration file setting of
                       the same name.
 
+  -b browser, --browser=browser
+                      Select the browser used for display.
+
   -l, --list-styles   List available styles and exit.
   -h, --help          Print this help message and exit.
   -v, --version       Print the version string and exit.
@@ -98,6 +101,7 @@ DEFAULT_CONFIG = """\
 [viewdoc]
 version = 1.9
 style = pypi
+browser = default
 
 [styles]
 plain =
@@ -347,6 +351,7 @@ class Defaults(object):
             return default
 
         self.version = get('viewdoc', 'version', '1.8').strip()
+        self.browser = get('viewdoc', 'browser', 'default').strip()
 
         self.known_styles = {}
         for key, value in getitems('styles', []):
@@ -410,6 +415,7 @@ class DocumentationViewer(object):
         self.setuptools = Setuptools()
         self.docutils = Docutils()
         self.styles = self.defaults.styles
+        self.browser = self.defaults.browser
         self.list = False
 
     def upgrade_defaults(self):
@@ -425,8 +431,8 @@ class DocumentationViewer(object):
         style_opts = tuple('--'+x for x in style_names)
 
         try:
-            options, remaining_args = getopt.gnu_getopt(args, 'hls:v',
-                ('help', 'style=', 'version', 'list-styles') + style_names)
+            options, remaining_args = getopt.gnu_getopt(args, 'b:hls:v',
+                ('help', 'style=', 'version', 'list-styles', 'browser=') + style_names)
         except getopt.GetoptError as e:
             err_exit('viewdoc: %s\n%s' % (e.msg, USAGE))
 
@@ -435,6 +441,8 @@ class DocumentationViewer(object):
                 self.styles = self.defaults.known_styles.get(value, '')
             elif name in style_opts:
                 self.styles = self.defaults.known_styles.get(name[2:], '')
+            elif name in ('-b', '--browser'):
+                self.browser = value
             elif name in ('-l', '--list-styles'):
                 self.list = True
             elif name in ('-h', '--help'):
@@ -507,7 +515,11 @@ class DocumentationViewer(object):
         else:
             err_exit('No such file or directory: %s' % arg)
 
-        webbrowser.open('file://%s' % outfile)
+        if self.browser == 'default':
+            webbrowser.open('file://%s' % outfile)
+        else:
+            browser = webbrowser.get(self.browser)
+            browser.open('file://%s' % outfile)
 
 
 def main(args=None):
