@@ -350,18 +350,14 @@ class Defaults(object):
                     return parser.items(section, raw=True)
             return default
 
-        self.version = get('viewdoc', 'version', '1.8').strip()
-        self.browser = get('viewdoc', 'browser', 'default').strip()
+        self.version = get('viewdoc', 'version', '').strip() or '1.8'
+        self.browser = get('viewdoc', 'browser', '').strip() or 'default'
 
         self.known_styles = {}
         for key, value in getitems('styles', []):
             self.known_styles[key] = value.strip()+'\n'
-        self.known_styles.setdefault('pypi', PYPI)
 
-        self.default_style = get('viewdoc', 'style', 'pypi').strip()
-        if self.default_style not in self.known_styles:
-            self.default_style = 'pypi'
-
+        self.default_style = get('viewdoc', 'style', '').strip()
         self.styles = self.known_styles.get(self.default_style, '')
 
     def upgrade(self):
