@@ -4,7 +4,10 @@ Changelog
 1.9 - Unreleased
 ----------------
 
-- Update PyPI stylesheet (grey code blocks).
+- Update ``pypi`` stylesheet (grey code blocks).
+  [stefan]
+
+- Automatically upgrade stylesheet information.
   [stefan]
 
 - Protect against bad or incomplete locale settings.
