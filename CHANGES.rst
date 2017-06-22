@@ -10,6 +10,9 @@ Changelog
 - Automatically upgrade stylesheet information.
   [stefan]
 
+- Add -b option to specify the browser to use.
+  [stefan]
+
 - Protect against bad or incomplete locale settings.
   [stefan]
 

@@ -31,6 +31,10 @@ Options
     Select the custom style added to the HTML output. Used to override the
     configuration file setting of the same name.
 
+``-b browser, --browser=browser``
+    Specify the browser used for display. For a list of names see the
+    `webbrowser`_ module.
+
 ``-l, --list-styles``
     List available styles and exit.
 
@@ -47,9 +51,24 @@ Options
     The Python package whose long description to view.
     Defaults to the current working directory.
 
+.. _`webbrowser`: https://docs.python.org/3/library/webbrowser.html#webbrowser.register
+
 Configuration
 =============
 
 viewdoc reads style information from its configuration file
 ``~/.viewdoc``. Edit this file to add your own styles.
+
+Known Issues
+============
+
+If you are on macOS Sierra be aware of https://bugs.python.org/issue30392. As
+a workaround specify the browser on the command line::
+
+    $ viewdoc -b safari src/my.package
+
+or use the configuration file::
+
+    [viewdoc]
+    browser = safari
 
