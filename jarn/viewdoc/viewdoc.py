@@ -456,6 +456,15 @@ class DocumentationViewer(object):
             self.docutils.publish_string(long_description, outfile, self.styles)
             return outfile
 
+    def open_in_browser(self, outfile):
+        """Open the given HTML file in a browser.
+        """
+        if self.browser == 'default':
+            webbrowser.open('file://%s' % outfile)
+        else:
+            browser = webbrowser.get(self.browser)
+            browser.open('file://%s' % outfile)
+
     def run(self):
         """Render and display Python package documentation.
         """
@@ -476,11 +485,7 @@ class DocumentationViewer(object):
         else:
             err_exit('No such file or directory: %s' % arg)
 
-        if self.browser == 'default':
-            webbrowser.open('file://%s' % outfile)
-        else:
-            browser = webbrowser.get(self.browser)
-            browser.open('file://%s' % outfile)
+        self.open_in_browser(outfile)
 
 
 def main(args=None):
