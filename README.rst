@@ -58,7 +58,7 @@ Configuration
 viewdoc reads style information from its configuration file
 ``~/.viewdoc``. Edit this file to add your own styles.
 
-Known Issues
+Known Bugs
 ============
 
 If you are on macOS Sierra be aware of https://bugs.python.org/issue30392. As
@@ -70,4 +70,11 @@ or use the configuration file::
 
     [viewdoc]
     browser = safari
+
+Related
+=======
+
+Also see our Python package releaser `jarn.mkrelease`_.
+
+.. _`jarn.mkrelease`: https://github.com/Jarn/jarn.mkrelease
 
