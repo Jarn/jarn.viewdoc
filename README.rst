@@ -34,6 +34,9 @@ Options
     Select the browser used for display. For a list of names see the
     `webbrowser`_ module.
 
+``-c config-file, --config-file=config-file``
+    Use config-file instead of the default ``~/.viewdoc``.
+
 ``-l, --list-styles``
     List available styles and exit.
 
