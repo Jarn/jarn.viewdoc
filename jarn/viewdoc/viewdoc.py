@@ -322,7 +322,7 @@ class Defaults(object):
 
         self.known_styles = {}
         for key, value in parser.items('styles', []):
-            self.known_styles[key] = value.strip()+'\n'
+            self.known_styles[key] = value.strip()
 
         self.default_style = parser.getstring('viewdoc', 'style', '')
         self.styles = self.known_styles.get(self.default_style, '')
