@@ -331,16 +331,13 @@ class Defaults(object):
         """Create the config file.
         """
         warn('Creating ' + self.filename)
-        self.write_default_config(self.filename)
+        return self.write_default_config(self.filename)
 
     def upgrade(self):
         """Upgrade the config file.
         """
-        if self.version == '1.8':
-            if self.backup_config(self.filename):
-                return self.write_default_config(self.filename)
-        elif self.version == '1.9':
-            return True
+        if self.backup_config(self.filename):
+            return self.write_default_config(self.filename)
         return False
 
     def backup_config(self, filename):
