@@ -317,6 +317,8 @@ class Defaults(object):
         parser = ConfigParser(warn)
         parser.read(self.filename)
 
+        self.warnings = parser.warnings
+
         self.version = parser.getstring('viewdoc', 'version', '') or '1.8'
         self.browser = parser.getstring('viewdoc', 'browser', '') or 'default'
 
@@ -326,6 +328,10 @@ class Defaults(object):
 
         self.default_style = parser.getstring('viewdoc', 'style', '')
         self.styles = self.known_styles.get(self.default_style, '')
+
+        if os.environ.get('JARN_RUN') == '1':
+            if parser.warnings:
+                err_exit('viewdoc: exiting')
 
     def write(self):
         """Create the config file.
@@ -497,6 +503,7 @@ class DocumentationViewer(object):
     def run(self):
         """Render and display Python package documentation.
         """
+        os.environ['JARN_RUN'] = '1'
         self.python.check_valid_python()
 
         args = self.parse_options(self.args)
