@@ -439,7 +439,7 @@ class DocumentationViewer(object):
             elif name in ('-v', '--version'):
                 msg_exit(VERSION)
             elif name in ('-c', '--config-file') and depth == 0:
-                self.reset_defaults(abspath(expanduser(value)))
+                self.reset_defaults(expanduser(value))
                 return self.parse_options(args, depth+1)
 
         if len(remaining_args) > 1:
