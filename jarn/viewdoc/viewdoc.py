@@ -96,7 +96,7 @@ pre.literal-block { background-color: #f0f0f0; }
 
 DEFAULT_CONFIG = """\
 [viewdoc]
-version = 1.9
+version = 2.0
 style = pypi
 browser = default
 
@@ -455,7 +455,7 @@ class DocumentationViewer(object):
             self.write_defaults()
             return self.parse_options(args, depth+1)
 
-        if self.defaults.version == '1.8' and depth == 0:
+        if self.defaults.version < '2.0' and depth == 0:
             self.upgrade_defaults()
             return self.parse_options(args, depth+1)
 

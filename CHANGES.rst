@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.9 - Unreleased
+2.0 - Unreleased
 ----------------
 
 - Update ``pypi`` stylesheet (grey code blocks).
