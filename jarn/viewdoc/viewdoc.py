@@ -404,13 +404,13 @@ class DocumentationViewer(object):
         """Create default config file and reload.
         """
         self.defaults.write()
-        self.set_defaults(self.defaults.filename)
+        self.reset_defaults(self.defaults.filename)
 
     def upgrade_defaults(self):
         """Upgrade config file and reload.
         """
         self.defaults.upgrade()
-        self.set_defaults(self.defaults.filename)
+        self.reset_defaults(self.defaults.filename)
 
     def parse_options(self, args, depth=0):
         """Parse command line options.
