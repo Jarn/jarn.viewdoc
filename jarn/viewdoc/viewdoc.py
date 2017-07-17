@@ -66,19 +66,22 @@ a.reference { border-bottom: 1px dashed #cccccc; }
 </style>
 """
 
-SMALL = """\
+PYPI = """\
 <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
+<link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pygments.css" type="text/css" />
+<link rel="stylesheet" href="http://pypi.python.org/static/css/pypi.css" type="text/css" />
+<link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
 <style type="text/css">
-body { margin-left: 20%; margin-right: 20%; font-size: 90%; }
+body { margin-left: 20%; margin-right: 20%; font-size: 95%; }
 a:link { text-decoration: none; color: #0000aa; }
 a:visited { text-decoration: none; color: #551a8b; }
 a.reference { border-bottom: 1px dashed #cccccc; }
+pre.literal-block { background-color: #f0f0f0; }
 </style>
 """
 
-PYPI = """\
+SMALL = """\
 <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
-<link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/docutils.css" type="text/css" />
 <link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pygments.css" type="text/css" />
 <link rel="stylesheet" href="http://pypi.python.org/static/css/pypi.css" type="text/css" />
 <link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
@@ -110,17 +113,20 @@ classic =
     a:visited { text-decoration: none; color: #551a8b; }
     a.reference { border-bottom: 1px dashed #cccccc; }
     </style>
-small =
+pypi =
     <link rel="stylesheet" href="https://pypi.python.org/static/styles/styles.css" type="text/css" />
+    <link rel="stylesheet" media="screen" href="https://pypi.python.org/static/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="https://pypi.python.org/static/css/pypi.css" type="text/css" />
+    <link rel="stylesheet" media="screen" href="https://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
     <style type="text/css">
-    body { margin-left: 20%; margin-right: 20%; font-size: 90%; }
+    body { margin-left: 20%; margin-right: 20%; font-size: 95%; }
     a:link { text-decoration: none; color: #0000aa; }
     a:visited { text-decoration: none; color: #551a8b; }
     a.reference { border-bottom: 1px dashed #cccccc; }
+    pre.literal-block { background-color: #f0f0f0; }
     </style>
-pypi =
+small =
     <link rel="stylesheet" href="https://pypi.python.org/static/styles/styles.css" type="text/css" />
-    <link rel="stylesheet" media="screen" href="https://pypi.python.org/static/css/docutils.css" type="text/css" />
     <link rel="stylesheet" media="screen" href="https://pypi.python.org/static/css/pygments.css" type="text/css" />
     <link rel="stylesheet" href="https://pypi.python.org/static/css/pypi.css" type="text/css" />
     <link rel="stylesheet" media="screen" href="https://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
