@@ -1,1 +1,1 @@
-include *.cfg *.ini *.rst LICENSE
+include LICENSE buildout.cfg tox.ini *.rst
