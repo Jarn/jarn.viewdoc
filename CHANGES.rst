@@ -4,6 +4,8 @@ Changelog
 2.1 - Unreleased
 ----------------
 
+- Add MANIFEST.in.
+  [stefan]
 
 2.0 - 2017-07-20
 ----------------

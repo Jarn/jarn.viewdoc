@@ -33,21 +33,21 @@ Python documentation viewer
 
 Options:
   -s style, --style=style, or --style
-                      Select the custom style added to the HTML output.
+                        Select the custom style added to the HTML output.
 
   -b browser, --browser=browser
-                      Select the browser used for display.
+                        Select the browser used for display.
 
   -c config-file, --config-file=config-file
-                      Use config-file instead of the default ~/.viewdoc.
+                        Use config-file instead of the default ~/.viewdoc.
 
-  -l, --list-styles   List available styles and exit.
-  -h, --help          Print this help message and exit.
-  -v, --version       Print the version string and exit.
+  -l, --list-styles     List available styles and exit.
+  -h, --help            Print this help message and exit.
+  -v, --version         Print the version string and exit.
 
-  rst-file            reST file to view.
-  egg-dir             Package whose long description to view. Defaults to
-                      the current working directory.
+  rst-file              reST file to view.
+  egg-dir               Package whose long description to view. Defaults to
+                        the current working directory.
 """
 
 PLAIN = """\
