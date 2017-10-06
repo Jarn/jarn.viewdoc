@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1 - Unreleased
+2.1 - 2017-10-06
 ----------------
 
 - Add MANIFEST.in.
