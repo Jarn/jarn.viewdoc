@@ -50,74 +50,27 @@ Options:
                         the current working directory.
 """
 
-PLAIN = """\
-<style type="text/css">
-body { margin-left: 20%; margin-right: 20%; }
-</style>
-"""
-
-CLASSIC = """\
-<link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
-<style type="text/css">
-body { margin-left: 20%; margin-right: 20%; font-size: 95%; }
-a:link { text-decoration: none; color: #0000aa; }
-a:visited { text-decoration: none; color: #551a8b; }
-a.reference { border-bottom: 1px dashed #cccccc; }
-</style>
-"""
-
-PYPI = """\
-<link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
-<link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pygments.css" type="text/css" />
-<link rel="stylesheet" href="http://pypi.python.org/static/css/pypi.css" type="text/css" />
-<link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
-<style type="text/css">
-body { margin-left: 20%; margin-right: 20%; font-size: 95%; }
-a:link { text-decoration: none; color: #0000aa; }
-a:visited { text-decoration: none; color: #551a8b; }
-a.reference { border-bottom: 1px dashed #cccccc; }
-pre.literal-block { background-color: #f0f0f0; }
-</style>
-"""
-
-SMALL = """\
-<link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
-<link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pygments.css" type="text/css" />
-<link rel="stylesheet" href="http://pypi.python.org/static/css/pypi.css" type="text/css" />
-<link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
-<style type="text/css">
-body { margin-left: 20%; margin-right: 20%; font-size: 90%; }
-a:link { text-decoration: none; color: #0000aa; }
-a:visited { text-decoration: none; color: #551a8b; }
-a.reference { border-bottom: 1px dashed #cccccc; }
-pre.literal-block { background-color: #f0f0f0; }
-</style>
-"""
-
-DEFAULT_CONFIG = """\
-[viewdoc]
-version = 2.0
-style = pypi
-browser = default
-
-[styles]
-plain =
+PLAIN = """
     <style type="text/css">
     body { margin-left: 20%; margin-right: 20%; }
     </style>
-classic =
-    <link rel="stylesheet" href="https://pypi.python.org/static/styles/styles.css" type="text/css" />
+"""
+
+CLASSIC = """
+    <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
     <style type="text/css">
     body { margin-left: 20%; margin-right: 20%; font-size: 95%; }
     a:link { text-decoration: none; color: #0000aa; }
     a:visited { text-decoration: none; color: #551a8b; }
     a.reference { border-bottom: 1px dashed #cccccc; }
     </style>
-pypi =
-    <link rel="stylesheet" href="https://pypi.python.org/static/styles/styles.css" type="text/css" />
-    <link rel="stylesheet" media="screen" href="https://pypi.python.org/static/css/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="https://pypi.python.org/static/css/pypi.css" type="text/css" />
-    <link rel="stylesheet" media="screen" href="https://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
+"""
+
+PYPI = """
+    <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
+    <link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://pypi.python.org/static/css/pypi.css" type="text/css" />
+    <link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
     <style type="text/css">
     body { margin-left: 20%; margin-right: 20%; font-size: 95%; }
     a:link { text-decoration: none; color: #0000aa; }
@@ -125,11 +78,13 @@ pypi =
     a.reference { border-bottom: 1px dashed #cccccc; }
     pre.literal-block { background-color: #f0f0f0; }
     </style>
-small =
-    <link rel="stylesheet" href="https://pypi.python.org/static/styles/styles.css" type="text/css" />
-    <link rel="stylesheet" media="screen" href="https://pypi.python.org/static/css/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="https://pypi.python.org/static/css/pypi.css" type="text/css" />
-    <link rel="stylesheet" media="screen" href="https://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
+"""
+
+SMALL = """
+    <link rel="stylesheet" href="http://pypi.python.org/static/styles/styles.css" type="text/css" />
+    <link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://pypi.python.org/static/css/pypi.css" type="text/css" />
+    <link rel="stylesheet" media="screen" href="http://pypi.python.org/static/css/pypi-screen.css" type="text/css" />
     <style type="text/css">
     body { margin-left: 20%; margin-right: 20%; font-size: 90%; }
     a:link { text-decoration: none; color: #0000aa; }
@@ -138,6 +93,87 @@ small =
     pre.literal-block { background-color: #f0f0f0; }
     </style>
 """
+
+SANS = """
+    <style type="text/css">
+    body {
+        font-family: Helvetica,Arial,sans-serif;
+        line-height: 1.4;
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+    pre.literal-block {
+        background-color: #f9f9f9;
+        border: 1px solid #d3d3d3;
+        margin-left: 0;
+        padding: 1em;
+    }
+    a { text-decoration: none; }
+    a:link { color: #0000e0; }
+    a:hover { text-decoration: underline; }
+    a:focus { text-decoration: underline; }
+    </style>
+"""
+
+WAREHOUSE = """
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic|Source+Code+Pro:500">
+    <style type="text/css">
+    body {
+        font-family: Source Sans Pro,Helvetica,Arial,sans-serif;
+        font-size: 17px;
+        font-weight: 300;
+        line-height: 1.4;
+        color: #464646;
+        background-color: #fdfdfd;
+    }
+    code, kbd, pre, samp, tt {
+        font-family: Source Code Pro,monospace;
+        font-size: 85%;
+        color: #6c6c6c;
+        background-color: #f9f9f9;
+        border: 1px solid #d3d3d3;
+        padding: 0 2px 1px;
+    }
+    a {
+        color: #006dad;
+        text-decoration: none;
+    }
+    a:hover {
+        color: #004d7a;
+        text-decoration: underline;
+    }
+    a:focus {
+        text-decoration: underline;
+    }
+    body {
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+    pre.literal-block {
+        margin-left: 0;
+        padding: 1em;
+    }
+    dl.docutils dt {
+        margin-top: 1em;
+    }
+    dl.docutils dd {
+        margin-bottom: 1em;
+    }
+    </style>
+"""
+
+DEFAULT_CONFIG = """\
+[viewdoc]
+version = 2.2
+style = pypi
+browser = default
+
+[styles]
+plain =%(PLAIN)s
+sans =%(SANS)s
+pypi =%(WAREHOUSE)s\
+""" % locals()
+
 
 # Open files as UTF-8
 if sys.version_info[0] >= 3:
@@ -455,7 +491,7 @@ class DocumentationViewer(object):
             self.write_defaults()
             return self.parse_options(args, depth+1)
 
-        if self.defaults.version < '2.0' and depth == 0:
+        if self.defaults.version < '2.2' and depth == 0:
             self.upgrade_defaults()
             return self.parse_options(args, depth+1)
 

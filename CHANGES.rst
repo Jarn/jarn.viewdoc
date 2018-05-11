@@ -4,6 +4,8 @@ Changelog
 2.2 - Unreleased
 ----------------
 
+- Update styles in light of new PyPI (warehouse).
+  [stefan]
 
 2.1 - 2017-10-06
 ----------------
