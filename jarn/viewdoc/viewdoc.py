@@ -386,6 +386,7 @@ class Defaults(object):
     def upgrade(self):
         """Upgrade the config file.
         """
+        warn('Upgrading ' + self.filename)
         if self.backup_config(self.filename):
             return self.write_default_config(self.filename)
         return False
