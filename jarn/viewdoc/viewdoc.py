@@ -162,9 +162,11 @@ WAREHOUSE = """
     </style>
 """
 
+CONFIG_VERSION = '2.2'
+
 DEFAULT_CONFIG = """\
 [viewdoc]
-version = 2.2
+version = %(CONFIG_VERSION)s
 style = pypi
 browser = default
 
@@ -491,7 +493,7 @@ class DocumentationViewer(object):
             self.write_defaults()
             return self.parse_options(args, depth+1)
 
-        if self.defaults.version < '2.2' and depth == 0:
+        if self.defaults.version < CONFIG_VERSION and depth == 0:
             self.upgrade_defaults()
             return self.parse_options(args, depth+1)
 
