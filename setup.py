@@ -34,7 +34,7 @@ setup(name='jarn.viewdoc',
       test_suite='jarn.viewdoc.tests',
       install_requires=[
           'setuptools',
-          'docutils >= 0.13.1',
+          'docutils >= 0.14',
           'pygments >= 2.2.0',
       ],
       entry_points={
