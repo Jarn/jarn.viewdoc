@@ -170,7 +170,7 @@ CONFIG_VERSION = '2.2'
 DEFAULT_CONFIG = """\
 [viewdoc]
 version = %(CONFIG_VERSION)s
-style = pypi
+style = sans
 browser = default
 
 [styles]
