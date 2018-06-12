@@ -108,10 +108,13 @@ SANS = """
         margin-left: 0;
         padding: 1em;
     }
-    a { text-decoration: none; }
-    a:link { color: #0000e0; }
-    a:hover { text-decoration: underline; }
-    a:focus { text-decoration: underline; }
+    a {
+        text-decoration: none;
+        color: #0070d0;
+    }
+    a:hover, a:focus {
+        text-decoration: underline;
+    }
     </style>
 """
 
