@@ -4,6 +4,9 @@ Changelog
 2.2 - Unreleased
 ----------------
 
+- Drop Python 2.6 support, add Python 3.7.
+  [stefan]
+
 - Update styles in light of new PyPI (warehouse).
   [stefan]
 
