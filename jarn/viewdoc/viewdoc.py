@@ -176,7 +176,7 @@ browser = default
 [styles]
 plain =%(PLAIN)s
 sans =%(SANS)s
-pypi =%(WAREHOUSE)s\
+pypi =%(WAREHOUSE)s
 """ % locals()
 
 
