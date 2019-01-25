@@ -61,6 +61,19 @@ Configuration
 viewdoc reads style information from its configuration file
 ``~/.viewdoc``. Edit this file to add your own styles.
 
+Built-in Styles
+---------------
+
+``plain``
+    Browser default with margins.
+
+``pypi``
+    New PyPI style with Google Fonts.
+
+``sans``
+    PyPI-like style without Google Fonts (the default).
+
+
 Known Bugs
 ============
 
