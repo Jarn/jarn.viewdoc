@@ -10,7 +10,7 @@ Changelog
 - Update styles in light of new PyPI (warehouse).
   [stefan]
 
-- Default to ``sans`` style because new PyPI uses Google fonts.
+- Default to ``sans`` style because new PyPI uses Google Fonts.
   [stefan]
 
 - Convert dashes to underscores in config parser optionxform.
