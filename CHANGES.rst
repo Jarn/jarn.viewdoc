@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2 - Unreleased
+2.2 - 2019-01-25
 ----------------
 
 - Drop Python 2.6 support, add Python 3.7.
