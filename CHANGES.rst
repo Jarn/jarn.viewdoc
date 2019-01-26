@@ -4,6 +4,8 @@ Changelog
 2.3 - Unreleased
 ----------------
 
+- Support ``python -m jarn.viewdoc``.
+  [stefan]
 
 2.2 - 2019-01-25
 ----------------
