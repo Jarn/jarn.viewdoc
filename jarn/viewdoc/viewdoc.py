@@ -258,7 +258,7 @@ class Process(object):
 class Setuptools(object):
 
     def __init__(self):
-        self.process = Process(env=self.get_env())
+        self.process = Process()
         self.python = Python()
 
     def get_env(self):
@@ -276,6 +276,7 @@ class Setuptools(object):
             err_exit('viewdoc: No setup.py in %s' % os.getcwd())
 
     def get_long_description(self):
+        self.process.env = self.get_env()
         rc, long_description = self.process.popen(
             '"%s" setup.py --long-description' % self.python)
         if rc != 0:
