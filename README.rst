@@ -14,7 +14,7 @@ uploading it to PyPI.
 Installation
 ============
 
-viewdoc works with Python 2.7 - 3.7 and all released versions of setuptools
+viewdoc works with Python 2.7 - 3.10 and all released versions of setuptools
 and distribute.
 
 Use ``pip install jarn.viewdoc`` to install the ``viewdoc`` script.
@@ -22,7 +22,7 @@ Use ``pip install jarn.viewdoc`` to install the ``viewdoc`` script.
 Usage
 =====
 
-``viewdoc [options] [rst-file | egg-dir]``
+``viewdoc [options] [rst-file|egg-dir]``
 
 Options
 =======
@@ -45,6 +45,9 @@ Options
 
 ``-v, --version``
     Print the version string and exit.
+
+Arguments
+=========
 
 ``rst-file``
     The reST file to view.

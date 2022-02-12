@@ -4,6 +4,20 @@ Changelog
 2.4 - Unreleased
 ----------------
 
+- Support Python 2.7 - 3.10.
+  [stefan]
+
+- Add output colors.
+  [stefan]
+
+- Move metadata to setup.cfg.
+  [stefan]
+
+- Move tests out of ``jarn.viewdoc`` namespace.
+  [stefan]
+
+- Include tests in sdist but not in wheel.
+  [stefan]
 
 2.3 - 2019-01-28
 ----------------
