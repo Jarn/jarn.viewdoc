@@ -42,13 +42,10 @@ class JailSetup(unittest.TestCase):
     tempdir = None
 
     def setUp(self):
+        self.addCleanup(self.tearDown)
         self.dirstack = ChdirStack()
-        try:
-            self.tempdir = realpath(self.mkdtemp())
-            self.dirstack.push(self.tempdir)
-        except:
-            self.cleanUp()
-            raise
+        self.tempdir = realpath(self.mkdtemp())
+        self.dirstack.push(self.tempdir)
 
     def tearDown(self):
         self.cleanUp()
@@ -62,7 +59,7 @@ class JailSetup(unittest.TestCase):
                 shutil.rmtree(self.tempdir)
 
     def mkdtemp(self):
-        return tempfile.mkdtemp()
+        return tempfile.mkdtemp(prefix='jail-')
 
     def mkfile(self, name, body=''):
         with open(name, 'wt') as file:
