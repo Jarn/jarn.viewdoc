@@ -128,7 +128,3 @@ small  = <style>2</style>
         self.assertEqual(dv.browser, 'firefox')
         self.assertEqual(dv.styles, '<style>2</style>')
 
-
-def test_suite():
-    return unittest.defaultTestLoader.loadTestsFromName(__name__)
-

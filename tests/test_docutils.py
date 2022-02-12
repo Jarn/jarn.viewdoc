@@ -12,6 +12,3 @@ class DocutilsTests(unittest.TestCase):
             s = s.decode('utf-8')
         self.assertTrue(s.startswith('<?xml version="1.0" encoding="utf-8" ?>'))
 
-
-def test_suite():
-    return unittest.defaultTestLoader.loadTestsFromName(__name__)

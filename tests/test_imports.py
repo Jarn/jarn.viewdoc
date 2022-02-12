@@ -42,10 +42,6 @@ class StdoutEncodingTests(unittest.TestCase):
         test_missing_libs_break_stdout_encoding_when_writing_to_pipe()
 
 
-def test_suite():
-    return unittest.defaultTestLoader.loadTestsFromName(__name__)
-
-
 if __name__ == '__main__':
     test_missing_libs_break_stdout_encoding_when_writing_to_pipe()
 

@@ -7,6 +7,3 @@ class ViewdocTests(unittest.TestCase):
         from jarn.viewdoc.viewdoc import DocumentationViewer
         DocumentationViewer([])
 
-
-def test_suite():
-    return unittest.defaultTestLoader.loadTestsFromName(__name__)
