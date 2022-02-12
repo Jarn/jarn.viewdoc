@@ -262,17 +262,10 @@ class Setuptools(object):
         self.python = Python()
 
     def get_env(self):
-        # Make sure setuptools is found if viewdoc has
+        # Make sure dependencies are found if viewdoc has
         # been installed with zc.buildout
-        path = []
-        for name in ('setuptools',):
-            try:
-                dist = pkg_resources.get_distribution(name)
-            except pkg_resources.DistributionNotFound:
-                continue
-            path.append(dist.location)
         env = os.environ.copy()
-        env['PYTHONPATH'] = ':'.join(path)
+        env['PYTHONPATH'] = ':'.join(sys.path)
         return env
 
     def is_valid_package(self):
