@@ -22,6 +22,7 @@ from subprocess import Popen, PIPE
 from docutils.core import publish_string
 
 from .configparser import ConfigParser
+from .colors import red
 
 VERSION = "jarn.viewdoc %s" % __version__
 USAGE = "Try 'viewdoc --help' for more information"
@@ -45,6 +46,7 @@ Options:
   -h, --help            Print this help message and exit.
   -v, --version         Print the version string and exit.
 
+Arguments:
   rst-file              reST file to view.
   egg-dir               Package whose long description to view. Defaults to
                         the current working directory.
@@ -195,6 +197,10 @@ def msg_exit(msg, rc=0):
 def err_exit(msg, rc=1):
     """Print msg to stderr and exit with rc.
     """
+    if '\033[' not in msg:
+        lines = msg.split('\n')
+        lines[0] = red(lines[0])
+        msg = '\n'.join(lines)
     print(msg, file=sys.stderr)
     sys.exit(rc)
 
@@ -229,11 +235,11 @@ class Python(object):
         return self.python
 
     def is_valid_python(self):
-        return (self.version_info[:2] >= (2, 6))
+        return (self.version_info[:2] >= (2, 7))
 
     def check_valid_python(self):
         if not self.is_valid_python():
-            err_exit('Python >= 2.6 required')
+            err_exit('viewdoc: Python >= 2.7 required')
 
 
 class Process(object):
@@ -256,7 +262,7 @@ class Setuptools(object):
         self.python = Python()
 
     def get_env(self):
-        # Make sure setuptools is found if mkrelease has
+        # Make sure setuptools is found if viewdoc has
         # been installed with zc.buildout
         path = []
         for name in ('setuptools',):
@@ -274,18 +280,18 @@ class Setuptools(object):
 
     def check_valid_package(self):
         if not self.is_valid_package():
-            err_exit('No setup.py found in %s' % os.getcwd())
+            err_exit('viewdoc: No setup.py in %s' % os.getcwd())
 
     def get_long_description(self):
         rc, long_description = self.process.popen(
             '"%s" setup.py --long-description' % self.python)
         if rc != 0:
-            err_exit('Bad setup.py')
+            err_exit('viewdoc: Bad setup.py in %s' % os.getcwd())
         if sys.version_info[0] >= 3:
             try:
                 return long_description.decode('utf-8')
             except UnicodeDecodeError as e:
-                err_exit('Error reading long description: %s' % (e,))
+                err_exit('viewdoc: Error reading long description: %s' % (e,))
         return long_description
 
 
@@ -298,9 +304,9 @@ class Docutils(object):
             with open(infile, 'rt') as file:
                 return file.read()
         except UnicodeDecodeError as e:
-            err_exit('Error reading %s: %s' % (infile, e))
+            err_exit('viewdoc: Error reading %s: %s' % (infile, e))
         except (IOError, OSError) as e:
-            err_exit('Error reading %s: %s' % (infile, e.strerror or e))
+            err_exit('viewdoc: Error reading %s: %s' % (infile, e.strerror or e))
 
     def write_file(self, html, outfile):
         """Write an HTML string to a file.
@@ -309,7 +315,7 @@ class Docutils(object):
             with open(outfile, 'wt') as file:
                 file.write(html)
         except (IOError, OSError) as e:
-            err_exit('Error writing %s: %s' % (outfile, e.strerror or e))
+            err_exit('viewdoc: Error writing %s: %s' % (outfile, e.strerror or e))
 
     def convert_string(self, rest):
         """Convert a reST string to an HTML string.
@@ -317,7 +323,7 @@ class Docutils(object):
         try:
             html = publish_string(rest, writer_name='html')
         except SystemExit as e:
-            err_exit('HTML conversion failed with error: %s' % e.code)
+            err_exit('viewdoc: HTML conversion failed with error: %s' % e.code)
         else:
             if sys.version_info[0] >= 3:
                 return html.decode('utf-8')
@@ -378,7 +384,7 @@ class Defaults(object):
 
         if os.environ.get('JARN_RUN') == '1':
             if parser.warnings:
-                err_exit('viewdoc: exiting')
+                err_exit('viewdoc: Bad configuration')
 
     def write(self):
         """Create the config file.
@@ -441,11 +447,11 @@ class DocumentationViewer(object):
         """Reset defaults.
         """
         if not exists(config_file):
-            err_exit('No such file: %(config_file)s' % locals())
+            err_exit('viewdoc: No such file: %(config_file)s' % locals())
         if not isfile(config_file):
-            err_exit('Not a file: %(config_file)s' % locals())
+            err_exit('viewdoc: Not a file: %(config_file)s' % locals())
         if not os.access(config_file, os.R_OK):
-            err_exit('File cannot be read: %(config_file)s' % locals())
+            err_exit('viewdoc: Cannot read: %(config_file)s' % locals())
         self.set_defaults(config_file)
 
     def write_defaults(self):
@@ -471,7 +477,7 @@ class DocumentationViewer(object):
                 ('help', 'style=', 'version', 'list-styles', 'browser=',
                  'config-file=') + style_names)
         except getopt.GetoptError as e:
-            err_exit('viewdoc: %s\n%s' % (e.msg, USAGE))
+            err_exit('viewdoc: %s\n%s' % (e.msg.capitalize(), USAGE))
 
         for name, value in options:
             if name in ('-s', '--style'):
@@ -491,7 +497,7 @@ class DocumentationViewer(object):
                 return self.parse_options(args, depth+1)
 
         if len(remaining_args) > 1:
-            err_exit('viewdoc: too many arguments\n%s' % USAGE)
+            err_exit('viewdoc: Too many arguments\n%s' % USAGE)
 
         if not isfile(self.defaults.filename) and depth == 0:
             self.write_defaults()
@@ -511,7 +517,7 @@ class DocumentationViewer(object):
         """
         known = sorted(self.defaults.known_styles)
         if not known:
-            err_exit('No styles', 0)
+            err_exit('viewdoc: No styles', 0)
         for style in known:
             if style == self.defaults.default_style:
                 print(style, '(default)')
@@ -542,11 +548,14 @@ class DocumentationViewer(object):
     def open_in_browser(self, outfile):
         """Open the given HTML file in a browser.
         """
-        if self.browser == 'default':
-            webbrowser.open('file://%s' % outfile)
-        else:
-            browser = webbrowser.get(self.browser)
-            browser.open('file://%s' % outfile)
+        try:
+            if self.browser == 'default':
+                webbrowser.open('file://%s' % outfile)
+            else:
+                browser = webbrowser.get(self.browser)
+                browser.open('file://%s' % outfile)
+        except webbrowser.Error as e:
+            err_exit('viewdoc: %s' % (str(e).capitalize(),))
 
     def run(self):
         """Render and display Python package documentation.
@@ -567,7 +576,7 @@ class DocumentationViewer(object):
         elif isdir(arg):
             outfile = self.render_long_description(arg)
         else:
-            err_exit('No such file or directory: %s' % arg)
+            err_exit('viewdoc: No such file or directory: %s' % arg)
 
         self.open_in_browser(outfile)
 
