@@ -1,1 +1,2 @@
 include LICENSE buildout.cfg tox.ini *.rst
+recursive-include jarn/viewdoc/tests *.py
