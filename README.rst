@@ -7,9 +7,20 @@ Python documentation viewer
 
 **viewdoc** is a Python package documentation viewer. It converts
 reST-formatted text to HTML and displays it in a browser window.
-
-viewdoc is typically used to check a package's long description before
+The viewer is typically used to check a package's long description before
 uploading it to PyPI.
+
+Contents
+========
+
+* Installation_
+* Usage_
+* Options_
+* Arguments_
+* Configuration_
+* `Known Issues`_
+* Related_
+* Changelog_
 
 Installation
 ============
@@ -77,13 +88,13 @@ Built-in Styles
     PyPI-like style without Google Fonts (the default).
 
 
-Known Bugs
+Known Issues
 ============
 
 If you are on macOS Sierra be aware of https://bugs.python.org/issue30392. As
 a workaround specify the browser on the command line::
 
-    $ viewdoc -b safari src/my.package
+    $ viewdoc -b safari
 
 or use the configuration file::
 
