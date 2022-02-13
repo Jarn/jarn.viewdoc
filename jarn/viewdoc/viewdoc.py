@@ -131,7 +131,7 @@ WAREHOUSE = """
         color: #464646;
         background-color: #fdfdfd;
     }
-    code, kbd, pre, samp, tt {
+    code, kbd, pre, samp, tt, pre.code {
         font-family: Source Code Pro,monospace;
         font-size: 85%;
         color: #6c6c6c;
@@ -167,7 +167,7 @@ WAREHOUSE = """
     </style>
 """
 
-CONFIG_VERSION = '2.2'
+CONFIG_VERSION = '2.4'
 
 DEFAULT_CONFIG = """\
 [viewdoc]

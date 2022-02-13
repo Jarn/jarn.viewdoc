@@ -7,6 +7,9 @@ Changelog
 - Support Python 2.7 - 3.10.
   [stefan]
 
+- Fix code block background color in ``pypi`` style.
+  [stefan]
+
 - Add output colors.
   [stefan]
 
