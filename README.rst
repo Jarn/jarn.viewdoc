@@ -25,8 +25,7 @@ Contents
 Installation
 ============
 
-viewdoc works with Python 2.7 - 3.10 and all released versions of setuptools
-and distribute.
+viewdoc works with Python 2.7 - 3.10 and all released versions of setuptools.
 
 Use ``pip install jarn.viewdoc`` to install the ``viewdoc`` script.
 
@@ -92,11 +91,14 @@ Known Issues
 ============
 
 If you are on macOS Sierra be aware of https://bugs.python.org/issue30392. As
-a workaround specify the browser on the command line::
+
+.. code::
 
     $ viewdoc -b safari
 
-or use the configuration file::
+or use the configuration file:
+
+.. code:: ini
 
     [viewdoc]
     browser = safari
