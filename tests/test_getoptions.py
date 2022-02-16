@@ -2,8 +2,8 @@ import unittest
 
 from jarn.viewdoc.viewdoc import DocumentationViewer
 
-from .testing import JailSetup
-from .testing import quiet
+from jarn.viewdoc.testing import JailSetup
+from jarn.viewdoc.testing import quiet
 
 
 class GetOptionsTests(JailSetup):
