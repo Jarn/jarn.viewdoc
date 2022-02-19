@@ -46,6 +46,8 @@ Options:
   -h, --help            Print this help message and exit.
   -v, --version         Print the version string and exit.
 
+  --no-color            Disable output colors.
+
 Arguments:
   rst-file              reST file to view.
   egg-dir               Package whose long description to view. Defaults to
@@ -423,7 +425,6 @@ class DocumentationViewer(object):
         """Initialize.
         """
         self.args = args
-        self.set_defaults(expanduser('~/.viewdoc'))
 
     def set_defaults(self, config_file):
         """Set defaults.
@@ -468,7 +469,7 @@ class DocumentationViewer(object):
         try:
             options, remaining_args = getopt.gnu_getopt(args, 'b:c:hls:v',
                 ('help', 'style=', 'version', 'list-styles', 'browser=',
-                 'config-file=') + style_names)
+                 'config-file=', 'no-color') + style_names)
         except getopt.GetoptError as e:
             err_exit('viewdoc: %s\n%s' % (e.msg.capitalize(), USAGE))
 
@@ -485,6 +486,8 @@ class DocumentationViewer(object):
                 msg_exit(HELP)
             elif name in ('-v', '--version'):
                 msg_exit(VERSION)
+            elif name in ('--no-color',):
+                os.environ['JARN_NO_COLOR'] = '1'
             elif name in ('-c', '--config-file') and depth == 0:
                 self.reset_defaults(expanduser(value))
                 return self.parse_options(args, depth+1)
@@ -550,10 +553,20 @@ class DocumentationViewer(object):
         except webbrowser.Error as e:
             err_exit('viewdoc: %s' % (str(e).capitalize(),))
 
+    def get_env(self):
+        os.environ['JARN_RUN'] = '1'
+
+        for arg in self.args:
+            if arg in ('--n', '--no', '--no-', '--no-c', '--no-co',
+                       '--no-col', '--no-colo', '--no-color'):
+                os.environ['JARN_NO_COLOR'] = '1'
+                break
+
     def run(self):
         """Render and display Python package documentation.
         """
-        os.environ['JARN_RUN'] = '1'
+        self.get_env()
+        self.set_defaults(expanduser('~/.viewdoc'))
         self.python.check_valid_python()
 
         args = self.parse_options(self.args)
