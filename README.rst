@@ -56,6 +56,9 @@ Options
 ``-v, --version``
     Print the version string and exit.
 
+``--no-color``
+    Disable output colors.
+
 Arguments
 =========
 
