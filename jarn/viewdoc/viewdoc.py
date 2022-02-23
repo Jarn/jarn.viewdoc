@@ -271,23 +271,44 @@ class Setuptools(object):
         return env
 
     def is_valid_package(self):
-        return isfile('setup.py')
+        return isfile('setup.py') or isfile('setup.cfg')
 
     def check_valid_package(self):
         if not self.is_valid_package():
             err_exit('viewdoc: No setup.py in %s' % os.getcwd())
 
     def get_long_description(self):
-        rc, long_description = self.process.popen(
-            '"%s" setup.py --long-description' % self.python)
+        parser = ConfigParser(warn)
+        parser.read('setup.cfg')
+        if parser.warnings:
+            err_exit('viewdoc: Bad setup in %s' % os.getcwd())
+
+        rc, long_description = self._run_setup_py(['--long-description'])
+
         if rc != 0:
-            err_exit('viewdoc: Bad setup.py in %s' % os.getcwd())
+            err_exit('viewdoc: Bad setup in %s' % os.getcwd())
         if sys.version_info[0] >= 3:
             try:
                 return long_description.decode('utf-8')
             except UnicodeDecodeError as e:
                 err_exit('viewdoc: Error reading long description: %s' % (e,))
         return long_description
+
+    def _run_setup_py(self, args):
+        """Run setup.py with monkey-patched setuptools.
+
+        'args' is the list of arguments that should be passed to
+        setup.py.
+        """
+        python = self.python
+        run_setup = 'from jarn.viewdoc import setup; setup.run(%(args)r)'
+
+        setup_py = '-c"%s"' % (run_setup % locals())
+
+        rc, stdoutdata = self.process.popen(
+            '"%(python)s" %(setup_py)s' % locals())
+
+        return rc, stdoutdata
 
 
 class Docutils(object):

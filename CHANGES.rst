@@ -13,6 +13,9 @@ Changelog
 - Add output colors.
   [stefan]
 
+- Do not require setup.py if setup.cfg exists.
+  [stefan]
+
 - Move metadata to setup.cfg.
   [stefan]
 
