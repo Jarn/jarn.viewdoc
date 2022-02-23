@@ -13,6 +13,7 @@ class GetOptionsTests(JailSetup):
 [viewdoc]
 """)
         dv = DocumentationViewer(['-c', 'my.cfg'])
+        dv.set_defaults('my.cfg')
         dv.parse_options(dv.args)
         self.assertEqual(dv.defaults.version, '1.8')
         self.assertEqual(dv.defaults.browser, 'default')
@@ -37,6 +38,7 @@ style =
 pypi =
 """)
         dv = DocumentationViewer(['-c', 'my.cfg'])
+        dv.set_defaults('my.cfg')
         dv.parse_options(dv.args)
         self.assertEqual(dv.defaults.version, '1.8')
         self.assertEqual(dv.defaults.browser, 'default')
@@ -57,6 +59,7 @@ style = pypi
 pypi = <style></style>
 """)
         dv = DocumentationViewer(['-c', 'my.cfg'])
+        dv.set_defaults('my.cfg')
         dv.parse_options(dv.args)
         self.assertEqual(dv.defaults.version, '2.0')
         self.assertEqual(dv.defaults.browser, 'safari')
@@ -84,6 +87,7 @@ pypi =
 plain =
 """)
         dv = DocumentationViewer(['-c', 'my.cfg'])
+        dv.set_defaults('my.cfg')
         dv.parse_options(dv.args)
         self.assertEqual(dv.defaults.version, '2.0')
         self.assertEqual(dv.defaults.browser, 'safari')
@@ -102,6 +106,7 @@ style = foo
 pypi = <style></style>
 """)
         dv = DocumentationViewer(['-c', 'my.cfg'])
+        dv.set_defaults('my.cfg')
         dv.parse_options(dv.args)
         self.assertEqual(dv.defaults.known_styles, {'pypi': '<style></style>'})
         self.assertEqual(dv.defaults.default_style, 'foo')
@@ -120,6 +125,7 @@ pypi = <style>1</style>
 small  = <style>2</style>
 """)
         dv = DocumentationViewer(['-c', 'my.cfg', '-s', 'small', '-b', 'firefox'])
+        dv.set_defaults('my.cfg')
         dv.parse_options(dv.args)
         self.assertEqual(dv.defaults.browser, 'safari')
         self.assertEqual(dv.defaults.known_styles, {'pypi': '<style>1</style>', 'small': '<style>2</style>'})
