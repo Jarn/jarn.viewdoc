@@ -18,7 +18,6 @@ Contents
 * Options_
 * Arguments_
 * Configuration_
-* `Known Issues`_
 * Related_
 * Changelog_
 
@@ -89,22 +88,6 @@ Built-in Styles
 ``sans``
     PyPI-like style without Google Fonts (the default).
 
-
-Known Issues
-============
-
-If you are on macOS Sierra be aware of https://bugs.python.org/issue30392. As
-
-.. code::
-
-    $ viewdoc -b safari
-
-or use the configuration file:
-
-.. code:: ini
-
-    [viewdoc]
-    browser = safari
 
 Related
 =======
