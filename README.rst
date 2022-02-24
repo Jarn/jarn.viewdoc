@@ -58,6 +58,9 @@ Options
 ``--no-color``
     Disable output colors.
 
+``--no-browser``
+    Print HTML to stdout.
+
 Arguments
 =========
 

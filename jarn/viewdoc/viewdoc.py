@@ -47,6 +47,7 @@ Options:
   -v, --version         Print the version string and exit.
 
   --no-color            Disable output colors.
+  --no-browser          Print HTML to stdout.
 
 Arguments:
   rst-file              reST file to view.
@@ -457,6 +458,7 @@ class DocumentationViewer(object):
         self.styles = self.defaults.styles
         self.browser = self.defaults.browser
         self.list = False
+        self.no_browser = False
 
     def reset_defaults(self, config_file):
         """Reset defaults.
@@ -490,7 +492,7 @@ class DocumentationViewer(object):
         try:
             options, remaining_args = getopt.gnu_getopt(args, 'b:c:hls:v',
                 ('help', 'style=', 'version', 'list-styles', 'browser=',
-                 'config-file=', 'no-color') + style_names)
+                 'config-file=', 'no-color', 'no-browser') + style_names)
         except getopt.GetoptError as e:
             err_exit('viewdoc: %s\n%s' % (e.msg.capitalize(), USAGE))
 
@@ -509,6 +511,8 @@ class DocumentationViewer(object):
                 msg_exit(VERSION)
             elif name in ('--no-color',):
                 os.environ['JARN_NO_COLOR'] = '1'
+            elif name in ('--no-browser',):
+                self.no_browser = True
             elif name in ('-c', '--config-file') and depth == 0:
                 self.reset_defaults(expanduser(value))
                 return self.parse_options(args, depth+1)
@@ -562,6 +566,15 @@ class DocumentationViewer(object):
             self.docutils.publish_string(long_description, outfile, self.styles)
             return outfile
 
+    def print_file(self, outfile):
+        """Print the given HTML file to stdout.
+        """
+        try:
+            with open(outfile, 'r') as f:
+                print(f.read(), end='')
+        except (IOError, OSError) as e:
+            err_exit('viewdoc: Error reading %s: %s' % (outfile, e.strerror or e))
+
     def open_in_browser(self, outfile):
         """Open the given HTML file in a browser.
         """
@@ -578,8 +591,7 @@ class DocumentationViewer(object):
         os.environ['JARN_RUN'] = '1'
 
         for arg in self.args:
-            if arg in ('--n', '--no', '--no-', '--no-c', '--no-co',
-                       '--no-col', '--no-colo', '--no-color'):
+            if arg in ('--no-c', '--no-co', '--no-col', '--no-colo', '--no-color'):
                 os.environ['JARN_NO_COLOR'] = '1'
                 break
 
@@ -605,7 +617,10 @@ class DocumentationViewer(object):
         else:
             err_exit('viewdoc: No such file or directory: %s' % arg)
 
-        self.open_in_browser(outfile)
+        if self.no_browser:
+            self.print_file(outfile)
+        else:
+            self.open_in_browser(outfile)
 
 
 def main(args=None):
