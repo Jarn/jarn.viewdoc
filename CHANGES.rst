@@ -10,6 +10,9 @@ Changelog
 - Fix code block background color in ``pypi`` style.
   [stefan]
 
+- Keep links underlined in ``pypi`` style.
+  [stefan]
+
 - Add output colors.
   [stefan]
 

@@ -144,14 +144,9 @@ WAREHOUSE = """
     }
     a {
         color: #006dad;
-        text-decoration: none;
     }
     a:hover {
         color: #004d7a;
-        text-decoration: underline;
-    }
-    a:focus {
-        text-decoration: underline;
     }
     body {
         margin-left: 20%;
