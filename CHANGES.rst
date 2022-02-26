@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.4 - Unreleased
+2.4 - 2022-02-26
 ----------------
 
 - Support Python 2.7 - 3.10.
