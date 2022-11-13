@@ -329,7 +329,7 @@ class Docutils(object):
         except (IOError, OSError) as e:
             err_exit('viewdoc: Error writing %s: %s' % (outfile, e.strerror or e))
 
-    def convert_string(self, rest):
+    def render_string(self, rest):
         """Convert a reST string to an HTML string.
         """
         try:
@@ -359,7 +359,7 @@ class Docutils(object):
     def publish_string(self, rest, outfile, styles=''):
         """Render a reST string as HTML.
         """
-        html = self.convert_string(rest)
+        html = self.render_string(rest)
         html = self.strip_xml_header(html)
         html = self.apply_styles(html, styles)
         self.write_file(html, outfile)
