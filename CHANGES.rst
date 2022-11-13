@@ -4,6 +4,9 @@ Changelog
 2.5 - Unreleased
 ----------------
 
+- Support Python 2.7 - 3.11.
+  [stefan]
+
 - Do not require setup.py or setup.cfg if pyproject.toml exists.
   [stefan]
 
