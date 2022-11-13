@@ -272,11 +272,12 @@ class Setuptools(object):
         return env
 
     def is_valid_package(self):
-        return isfile('setup.py') or isfile('setup.cfg')
+        return isfile('setup.py') or isfile('setup.cfg') or isfile('pyproject.toml')
 
     def check_valid_package(self):
         if not self.is_valid_package():
-            err_exit('viewdoc: No setup.py in %s' % os.getcwd())
+            err_exit('viewdoc: No setup in %s\n'
+                     'Expected setup.py and/or setup.cfg and/or pyproject.toml' % os.getcwd())
 
     def get_long_description(self):
         parser = ConfigParser(warn)

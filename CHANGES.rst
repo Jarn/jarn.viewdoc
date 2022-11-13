@@ -4,6 +4,8 @@ Changelog
 2.5 - Unreleased
 ----------------
 
+- Do not require setup.py or setup.cfg if pyproject.toml exists.
+  [stefan]
 
 2.4 - 2022-02-26
 ----------------
