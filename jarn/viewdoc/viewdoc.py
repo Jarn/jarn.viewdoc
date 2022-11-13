@@ -287,14 +287,19 @@ class Setuptools(object):
 
         rc, long_description = self._run_setup_py(['--long-description'])
 
-        if rc != 0:
-            err_exit('viewdoc: Bad setup in %s' % os.getcwd())
-        if sys.version_info[0] >= 3:
-            try:
-                return long_description.decode('utf-8')
-            except UnicodeDecodeError as e:
-                err_exit('viewdoc: Error reading long description: %s' % (e,))
-        return long_description
+        if rc == 0:
+            if sys.version_info[0] >= 3:
+                try:
+                    long_description = long_description.decode('utf-8')
+                except UnicodeDecodeError as e:
+                    err_exit('viewdoc: Error reading long description: %s' % (e,))
+
+            if long_description.strip() == 'UNKNOWN':
+                parser.warn('Missing metadata: long_description')
+            if not parser.warnings:
+                return long_description
+
+        err_exit('viewdoc: Bad setup in %s' % os.getcwd())
 
     def _run_setup_py(self, args):
         """Run setup.py with monkey-patched setuptools.
