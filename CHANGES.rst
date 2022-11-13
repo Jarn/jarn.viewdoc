@@ -10,6 +10,12 @@ Changelog
 - Do not require setup.py or setup.cfg if pyproject.toml exists.
   [stefan]
 
+- Filter some deprecation warnings.
+  [stefan]
+
+- Warn if long_description metadata is missing.
+  [stefan]
+
 2.4 - 2022-02-26
 ----------------
 
