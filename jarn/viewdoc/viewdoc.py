@@ -179,6 +179,11 @@ sans =%(SANS)s
 pypi =%(WAREHOUSE)s
 """ % locals()
 
+FILTERWARNINGS = ('-W "ignore:setup.py install is deprecated" '
+                  '-W "ignore:easy_install command is deprecated" '
+                  '-W "ignore:Support for \`[tool.setuptools]\` in \`pyproject.toml\`" '
+                  '-W "ignore:The namespace_packages parameter is deprecated"')
+
 
 # Open files as UTF-8
 if sys.version_info[0] >= 3:
@@ -297,12 +302,13 @@ class Setuptools(object):
         setup.py.
         """
         python = self.python
-        run_setup = 'from jarn.viewdoc import setup; setup.run(%(args)r)'
+        filterwarnings = FILTERWARNINGS
 
+        run_setup = 'from jarn.viewdoc import setup; setup.run(%(args)r)'
         setup_py = '-c"%s"' % (run_setup % locals())
 
         rc, stdoutdata = self.process.popen(
-            '"%(python)s" %(setup_py)s' % locals())
+            '"%(python)s" %(filterwarnings)s %(setup_py)s' % locals())
 
         return rc, stdoutdata
 
