@@ -4,6 +4,8 @@ Changelog
 2.6 - Unreleased
 ----------------
 
+- Support setuptools >= 65.6.0.
+  [stefan]
 
 2.5 - 2022-11-13
 ----------------

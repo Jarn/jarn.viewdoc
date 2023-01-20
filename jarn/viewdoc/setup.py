@@ -38,11 +38,13 @@ def run(args):
     # Set log level INFO in setuptools >= 60.0.0 with local distutils
     import setuptools
     import distutils
-    distutils.log.set_verbosity(1)
+    if hasattr(distutils.log, 'set_verbosity'):
+        distutils.log.set_verbosity(1)
 
     # Required in setuptools >= 60.6.0, <= 60.9.1
     import distutils.dist
-    distutils.dist.log.set_verbosity(1)
+    if hasattr(distutils.dist.log, 'set_verbosity'):
+        distutils.dist.log.set_verbosity(1)
 
     import setuptools.command.egg_info
     setuptools.command.egg_info.walk_revctrl = no_walk_revctrl
