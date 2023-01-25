@@ -313,10 +313,8 @@ class Setuptools(object):
         run_setup = 'from jarn.viewdoc import setup; setup.run(%(args)r)'
         setup_py = '-c"%s"' % (run_setup % locals())
 
-        rc, stdoutdata = self.process.popen(
+        return self.process.popen(
             '"%(python)s" %(filterwarnings)s %(setup_py)s' % locals())
-
-        return rc, stdoutdata
 
 
 class Docutils(object):
