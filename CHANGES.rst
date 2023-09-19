@@ -4,6 +4,11 @@ Changelog
 2.7 - Unreleased
 ----------------
 
+- Update tox.ini for latest tox.
+  [stefan]
+
+- The xml-preamble changed in docutils 0.20.
+  [stefan]
 
 2.6 - 2023-01-21
 ----------------
