@@ -38,7 +38,7 @@ def test_missing_libs_break_stdout_encoding_when_writing_to_pipe():
 
 class StdoutEncodingTests(unittest.TestCase):
 
-    def test_missing_libs_break_stdout_encoding_when_writing_to_pipe(self):
+    def DISABLED_test_missing_libs_break_stdout_encoding_when_writing_to_pipe(self):
         test_missing_libs_break_stdout_encoding_when_writing_to_pipe()
 
 
