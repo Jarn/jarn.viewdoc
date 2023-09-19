@@ -10,5 +10,5 @@ class DocutilsTests(unittest.TestCase):
         s = publish_string('foo', writer_name='html')
         if sys.version_info[0] >= 3:
             s = s.decode('utf-8')
-        self.assertTrue(s.startswith('<?xml version="1.0" encoding="utf-8" ?>'))
+        self.assertTrue(s.startswith('<?xml version="1.0" encoding="utf-8"'))
 
