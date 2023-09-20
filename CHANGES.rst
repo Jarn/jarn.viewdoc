@@ -10,6 +10,12 @@ Changelog
 - The xml-preamble changed in docutils 0.20.
   [stefan]
 
+- Filter deprecated config warning.
+  [stefan]
+
+- Fix invalid escape sequences.
+  [stefan]
+
 2.6 - 2023-01-21
 ----------------
 
