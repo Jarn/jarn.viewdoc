@@ -22,7 +22,7 @@ Changelog
 - Replace pkg_resources with importlib.metadata.
   [stefan]
 
-- Drop Python < 3.7.
+- Require Python >= 3.7.
   [stefan]
 
 2.6 - 2023-01-21
