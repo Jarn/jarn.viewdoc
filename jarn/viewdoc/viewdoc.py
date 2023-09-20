@@ -182,8 +182,7 @@ FILTERWARNINGS = ('-W "ignore:setup.py install is deprecated" '
 
 
 # Open files as UTF-8
-if sys.version_info[0] >= 3:
-    open = partial(open, encoding='utf-8')
+open = partial(open, encoding='utf-8')
 
 
 def msg_exit(msg, rc=0):
@@ -284,11 +283,10 @@ class Setuptools(object):
         rc, long_description = self._run_setup_py(['--long-description'])
 
         if rc == 0:
-            if sys.version_info[0] >= 3:
-                try:
-                    long_description = long_description.decode('utf-8')
-                except UnicodeDecodeError as e:
-                    err_exit('viewdoc: Error reading long description: %s' % (e,))
+            try:
+                long_description = long_description.decode('utf-8')
+            except UnicodeDecodeError as e:
+                err_exit('viewdoc: Error reading long description: %s' % (e,))
 
             if long_description.strip() == 'UNKNOWN':
                 parser.warn('Missing metadata: long_description')
@@ -343,9 +341,7 @@ class Docutils(object):
         except SystemExit as e:
             err_exit('viewdoc: HTML conversion failed with error: %s' % e.code)
         else:
-            if sys.version_info[0] >= 3:
-                return html.decode('utf-8')
-            return html
+            return html.decode('utf-8')
 
     def strip_xml_header(self, html):
         """Strip any <?xml version="1.0" encoding="utf-8" ?> header.
