@@ -1,7 +1,5 @@
 # 'from jarn.viewdoc import setup; setup.run(%(args)r)'
 
-from __future__ import absolute_import
-
 import sys
 import os
 import glob
