@@ -4,6 +4,18 @@ Changelog
 3.0 - Unreleased
 ----------------
 
+- Switch to PEP420 namespace packages. Please upgrade all jarn.* packages.
+  [stefan]
+
+- Replace pkg_resources with importlib.metadata.
+  [stefan]
+
+- Require Python >= 3.7.
+  [stefan]
+
+2.7 - Unreleased
+----------------
+
 - Update tox.ini for latest tox.
   [stefan]
 
@@ -14,15 +26,6 @@ Changelog
   [stefan]
 
 - Fix invalid escape sequences.
-  [stefan]
-
-- Switch to PEP420 namespace packages. Please upgrade all jarn.* packages.
-  [stefan]
-
-- Replace pkg_resources with importlib.metadata.
-  [stefan]
-
-- Require Python >= 3.7.
   [stefan]
 
 2.6 - 2023-01-21
