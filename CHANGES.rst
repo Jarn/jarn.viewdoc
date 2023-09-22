@@ -19,13 +19,13 @@ Changelog
 - Update tox.ini for latest tox.
   [stefan]
 
-- The xml-preamble changed in docutils 0.20.
-  [stefan]
-
 - Filter deprecated config warning.
   [stefan]
 
 - Fix invalid escape sequences.
+  [stefan]
+
+- Fix tests for docutils >= 0.20.0.
   [stefan]
 
 2.6 - 2023-01-21
