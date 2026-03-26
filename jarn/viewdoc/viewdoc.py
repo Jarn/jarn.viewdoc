@@ -1,7 +1,4 @@
-try:
-    from importlib.metadata import version
-except ImportError:
-    from importlib_metadata import version
+from importlib.metadata import version
 
 __version__ = version('jarn.viewdoc')
 
@@ -233,11 +230,11 @@ class Python(object):
         return self.python
 
     def is_valid_python(self):
-        return (self.version_info[:2] >= (3, 7))
+        return (self.version_info[:2] >= (3, 8))
 
     def check_valid_python(self):
         if not self.is_valid_python():
-            err_exit('viewdoc: Python >= 3.7 required')
+            err_exit('viewdoc: Python >= 3.8 required')
 
 
 class Process(object):
