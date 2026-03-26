@@ -4,6 +4,8 @@ Changelog
 2.8 - Unreleased
 ----------------
 
+- Require setuptools < 80.0.0 to keep using pkg_resources.
+  [stefan]
 
 2.7 - 2023-09-23
 ----------------
