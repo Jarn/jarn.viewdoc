@@ -28,6 +28,9 @@ viewdoc works with Python >= 3.8 and all recent versions of setuptools.
 
 Use ``pip install jarn.viewdoc`` to install the ``viewdoc`` script.
 
+Since version 3.0 viewdoc uses PEP420 namespace packages. Please upgrade all
+jarn.* packages.
+
 Usage
 =====
 
