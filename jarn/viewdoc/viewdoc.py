@@ -506,7 +506,7 @@ class DocumentationViewer(object):
             elif name in ('-v', '--version'):
                 msg_exit(VERSION)
             elif name in ('--no-color',):
-                os.environ['JARN_NO_COLOR'] = '1'
+                os.environ['NO_COLOR'] = '1'
             elif name in ('--no-browser',):
                 self.no_browser = True
             elif name in ('-c', '--config-file') and depth == 0:
@@ -588,7 +588,7 @@ class DocumentationViewer(object):
 
         for arg in self.args:
             if arg in ('--no-c', '--no-co', '--no-col', '--no-colo', '--no-color'):
-                os.environ['JARN_NO_COLOR'] = '1'
+                os.environ['NO_COLOR'] = '1'
                 break
 
     def run(self):
